@@ -24,6 +24,9 @@
 
 - (void)loadView {
     NSView *view = [NSView new];
+    view.wantsLayer = YES;
+    view.layer.borderWidth = 30.f;
+    view.layer.borderColor = NSColor.redColor.CGColor;
     self.view = view;
     [view release];
 }
@@ -73,7 +76,7 @@
 }
 
 - (void)configureCollectionView {
-    NSScreen.mainScreen.auxiliaryTopLeftArea;
+    
 }
 
 @end
