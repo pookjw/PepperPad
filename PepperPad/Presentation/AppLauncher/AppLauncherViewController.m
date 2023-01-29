@@ -6,11 +6,13 @@
 //
 
 #import "AppLauncherViewController.h"
+#import "AppLauncherViewModel.h"
 
 @interface AppLauncherViewController ()
 @property (retain) NSVisualEffectView *visualEffectView;
 @property (retain) NSScrollView *scrollView;
 @property (retain) NSCollectionView *collectionView;
+@property (retain) AppLauncherViewModel *viewModel;
 @end
 
 @implementation AppLauncherViewController
@@ -19,14 +21,12 @@
     [_visualEffectView release];
     [_scrollView release];
     [_collectionView release];
+    [_viewModel release];
     [super dealloc];
 }
 
 - (void)loadView {
     NSView *view = [NSView new];
-    view.wantsLayer = YES;
-    view.layer.borderWidth = 30.f;
-    view.layer.borderColor = NSColor.redColor.CGColor;
     self.view = view;
     [view release];
 }
@@ -36,6 +36,7 @@
     [self configureVisualEffectView];
     [self configureScrollView];
     [self configureCollectionView];
+    [self configureViewModel];
 }
 
 - (void)configureVisualEffectView {
@@ -77,6 +78,12 @@
 
 - (void)configureCollectionView {
     
+}
+
+- (void)configureViewModel {
+    AppLauncherViewModel *viewModel = [AppLauncherViewModel new];
+    self.viewModel = viewModel;
+    [viewModel release];
 }
 
 @end

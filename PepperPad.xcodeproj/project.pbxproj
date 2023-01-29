@@ -8,21 +8,19 @@
 
 /* Begin PBXBuildFile section */
 		4F51C99A2980272300B80AFD /* swizzle.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F51C9982980272300B80AFD /* swizzle.m */; };
-		4F51C99C2980274900B80AFD /* NSWindow+Swizzle.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F51C99B2980274900B80AFD /* NSWindow+Swizzle.m */; };
 		4FF3F8282973C2B4008DE74D /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FF3F8272973C2B4008DE74D /* AppDelegate.m */; };
 		4FF3F82D2973C2B5008DE74D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4FF3F82C2973C2B5008DE74D /* Assets.xcassets */; };
 		4FF3F8322973C2B5008DE74D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FF3F8312973C2B5008DE74D /* main.m */; };
 		4FF3F83B2973C3C6008DE74D /* MainWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FF3F83A2973C3C6008DE74D /* MainWindowController.m */; };
 		4FF3F8672973CD65008DE74D /* AppLauncherViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FF3F8662973CD65008DE74D /* AppLauncherViewController.m */; };
+		4FF5942D2986EADD00A4E9FC /* AppLauncherViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FF5942C2986EADD00A4E9FC /* AppLauncherViewModel.m */; };
 		4FFE0BCF2980249C00737695 /* NSObject+Foundation_IvarDescription.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FFE0BCE2980249C00737695 /* NSObject+Foundation_IvarDescription.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		4F51C9982980272300B80AFD /* swizzle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = swizzle.m; sourceTree = "<group>"; };
 		4F51C9992980272300B80AFD /* swizzle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = swizzle.h; sourceTree = "<group>"; };
-		4F51C99B2980274900B80AFD /* NSWindow+Swizzle.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSWindow+Swizzle.m"; sourceTree = "<group>"; };
-		4F51C99D2980276300B80AFD /* NSWindow+Swizzle.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSWindow+Swizzle.h"; sourceTree = "<group>"; };
-		4F6054362973DC4800AF6187 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		4F6054362973DC4800AF6187 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4FF3F8232973C2B4008DE74D /* PepperPad.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PepperPad.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4FF3F8262973C2B4008DE74D /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		4FF3F8272973C2B4008DE74D /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -33,6 +31,12 @@
 		4FF3F83A2973C3C6008DE74D /* MainWindowController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MainWindowController.m; sourceTree = "<group>"; };
 		4FF3F8652973CD65008DE74D /* AppLauncherViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppLauncherViewController.h; sourceTree = "<group>"; };
 		4FF3F8662973CD65008DE74D /* AppLauncherViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppLauncherViewController.m; sourceTree = "<group>"; };
+		4FF5942B2986EADD00A4E9FC /* AppLauncherViewModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppLauncherViewModel.h; sourceTree = "<group>"; };
+		4FF5942C2986EADD00A4E9FC /* AppLauncherViewModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppLauncherViewModel.m; sourceTree = "<group>"; };
+		4FF5942F2986EAFE00A4E9FC /* LSApplicationWorkspace.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LSApplicationWorkspace.h; sourceTree = "<group>"; };
+		4FF594302986F3EE00A4E9FC /* LSApplicationProxy.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LSApplicationProxy.h; sourceTree = "<group>"; };
+		4FF594312986F46D00A4E9FC /* _LSQueryResult.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = _LSQueryResult.h; sourceTree = "<group>"; };
+		4FF594322986F48B00A4E9FC /* LSResourceProxy.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LSResourceProxy.h; sourceTree = "<group>"; };
 		4FFE0BCD2980249C00737695 /* NSObject+Foundation_IvarDescription.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+Foundation_IvarDescription.h"; sourceTree = "<group>"; };
 		4FFE0BCE2980249C00737695 /* NSObject+Foundation_IvarDescription.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSObject+Foundation_IvarDescription.mm"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -67,24 +71,84 @@
 		4FF3F8252973C2B4008DE74D /* PepperPad */ = {
 			isa = PBXGroup;
 			children = (
-				4F6054362973DC4800AF6187 /* Info.plist */,
-				4FF3F8262973C2B4008DE74D /* AppDelegate.h */,
-				4FF3F8272973C2B4008DE74D /* AppDelegate.m */,
-				4FF3F8392973C3C6008DE74D /* MainWindowController.h */,
-				4FF3F83A2973C3C6008DE74D /* MainWindowController.m */,
-				4FF3F8652973CD65008DE74D /* AppLauncherViewController.h */,
-				4FF3F8662973CD65008DE74D /* AppLauncherViewController.m */,
-				4FFE0BCD2980249C00737695 /* NSObject+Foundation_IvarDescription.h */,
-				4FFE0BCE2980249C00737695 /* NSObject+Foundation_IvarDescription.mm */,
-				4F51C9992980272300B80AFD /* swizzle.h */,
-				4F51C9982980272300B80AFD /* swizzle.m */,
-				4F51C99D2980276300B80AFD /* NSWindow+Swizzle.h */,
-				4F51C99B2980274900B80AFD /* NSWindow+Swizzle.m */,
-				4FF3F82C2973C2B5008DE74D /* Assets.xcassets */,
+				4FF594262986E71E00A4E9FC /* Application */,
+				4FF594272986E73300A4E9FC /* Resources */,
+				4FF594252986E71500A4E9FC /* Utils */,
+				4FF5942E2986EAF500A4E9FC /* Private */,
+				4FF594282986E75700A4E9FC /* Presentation */,
 				4FF3F8312973C2B5008DE74D /* main.m */,
 				4FF3F8332973C2B5008DE74D /* PepperPad.entitlements */,
 			);
 			path = PepperPad;
+			sourceTree = "<group>";
+		};
+		4FF594252986E71500A4E9FC /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				4FFE0BCD2980249C00737695 /* NSObject+Foundation_IvarDescription.h */,
+				4FFE0BCE2980249C00737695 /* NSObject+Foundation_IvarDescription.mm */,
+				4F51C9992980272300B80AFD /* swizzle.h */,
+				4F51C9982980272300B80AFD /* swizzle.m */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		4FF594262986E71E00A4E9FC /* Application */ = {
+			isa = PBXGroup;
+			children = (
+				4FF3F8262973C2B4008DE74D /* AppDelegate.h */,
+				4FF3F8272973C2B4008DE74D /* AppDelegate.m */,
+			);
+			path = Application;
+			sourceTree = "<group>";
+		};
+		4FF594272986E73300A4E9FC /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				4FF3F82C2973C2B5008DE74D /* Assets.xcassets */,
+				4F6054362973DC4800AF6187 /* Info.plist */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		4FF594282986E75700A4E9FC /* Presentation */ = {
+			isa = PBXGroup;
+			children = (
+				4FF594292986E7C300A4E9FC /* Main */,
+				4FF5942A2986E7CA00A4E9FC /* AppLauncher */,
+			);
+			path = Presentation;
+			sourceTree = "<group>";
+		};
+		4FF594292986E7C300A4E9FC /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				4FF3F8392973C3C6008DE74D /* MainWindowController.h */,
+				4FF3F83A2973C3C6008DE74D /* MainWindowController.m */,
+			);
+			path = Main;
+			sourceTree = "<group>";
+		};
+		4FF5942A2986E7CA00A4E9FC /* AppLauncher */ = {
+			isa = PBXGroup;
+			children = (
+				4FF3F8652973CD65008DE74D /* AppLauncherViewController.h */,
+				4FF3F8662973CD65008DE74D /* AppLauncherViewController.m */,
+				4FF5942B2986EADD00A4E9FC /* AppLauncherViewModel.h */,
+				4FF5942C2986EADD00A4E9FC /* AppLauncherViewModel.m */,
+			);
+			path = AppLauncher;
+			sourceTree = "<group>";
+		};
+		4FF5942E2986EAF500A4E9FC /* Private */ = {
+			isa = PBXGroup;
+			children = (
+				4FF5942F2986EAFE00A4E9FC /* LSApplicationWorkspace.h */,
+				4FF594312986F46D00A4E9FC /* _LSQueryResult.h */,
+				4FF594322986F48B00A4E9FC /* LSResourceProxy.h */,
+				4FF594302986F3EE00A4E9FC /* LSApplicationProxy.h */,
+			);
+			path = Private;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -155,11 +219,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4F51C99C2980274900B80AFD /* NSWindow+Swizzle.m in Sources */,
 				4FFE0BCF2980249C00737695 /* NSObject+Foundation_IvarDescription.mm in Sources */,
 				4FF3F8322973C2B5008DE74D /* main.m in Sources */,
 				4FF3F83B2973C3C6008DE74D /* MainWindowController.m in Sources */,
 				4FF3F8672973CD65008DE74D /* AppLauncherViewController.m in Sources */,
+				4FF5942D2986EADD00A4E9FC /* AppLauncherViewModel.m in Sources */,
 				4FF3F8282973C2B4008DE74D /* AppDelegate.m in Sources */,
 				4F51C99A2980272300B80AFD /* swizzle.m in Sources */,
 			);
@@ -289,7 +353,7 @@
 				DEVELOPMENT_TEAM = P53D29U9LJ;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = PepperPad/Info.plist;
+				INFOPLIST_FILE = PepperPad/Resources/Info.plist;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -315,7 +379,7 @@
 				DEVELOPMENT_TEAM = P53D29U9LJ;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = PepperPad/Info.plist;
+				INFOPLIST_FILE = PepperPad/Resources/Info.plist;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
 				LD_RUNPATH_SEARCH_PATHS = (

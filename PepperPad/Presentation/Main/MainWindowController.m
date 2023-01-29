@@ -31,16 +31,7 @@
     
     [window release];
     
-//    NSLog(@"%@", [NSWindowController _shortMethodDescription]);
-    
     return self;
-}
-
-- (void)windowDidLoad {
-    [super windowDidLoad];
-    
-    [self.window toggleFullScreen:nil];
-    [self.window setFrame:NSMakeRect(0.f, 0.f, self.window.screen.frame.size.width, self.window.screen.frame.size.height) display:YES];
 }
 
 @end
