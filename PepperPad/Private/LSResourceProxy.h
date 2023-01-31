@@ -9,8 +9,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface LSResourceProxy : NSObject
-@property (copy, nonatomic, setter=_setLocalizedName:) NSString* localizedName;
+@interface LSResourceProxy : _LSQueryResult
+@property (copy, nonatomic, setter=_setLocalizedName:) NSString *localizedName;
 @end
 
 NS_ASSUME_NONNULL_END

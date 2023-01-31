@@ -18,6 +18,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4F1E60FC298923210051D5C2 /* LSBundleProxy.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LSBundleProxy.h; sourceTree = "<group>"; };
+		4F1E60FD298947830051D5C2 /* LSIconResource.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LSIconResource.h; sourceTree = "<group>"; };
 		4F51C9982980272300B80AFD /* swizzle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = swizzle.m; sourceTree = "<group>"; };
 		4F51C9992980272300B80AFD /* swizzle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = swizzle.h; sourceTree = "<group>"; };
 		4F6054362973DC4800AF6187 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -146,7 +148,9 @@
 				4FF5942F2986EAFE00A4E9FC /* LSApplicationWorkspace.h */,
 				4FF594312986F46D00A4E9FC /* _LSQueryResult.h */,
 				4FF594322986F48B00A4E9FC /* LSResourceProxy.h */,
+				4F1E60FC298923210051D5C2 /* LSBundleProxy.h */,
 				4FF594302986F3EE00A4E9FC /* LSApplicationProxy.h */,
+				4F1E60FD298947830051D5C2 /* LSIconResource.h */,
 			);
 			path = Private;
 			sourceTree = "<group>";
@@ -347,6 +351,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = PepperPad/PepperPad.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
@@ -373,6 +378,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = PepperPad/PepperPad.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;

@@ -10,7 +10,6 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface _LSQueryResult : NSObject <NSSecureCoding, NSCopying>
-
 @end
 
 NS_ASSUME_NONNULL_END

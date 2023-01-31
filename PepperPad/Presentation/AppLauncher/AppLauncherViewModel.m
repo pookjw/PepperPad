@@ -6,7 +6,6 @@
 //
 
 #import "AppLauncherViewModel.h"
-#import "LSApplicationWorkspace.h"
 
 @interface AppLauncherViewModel ()
 
@@ -16,7 +15,7 @@
 
 - (instancetype)init {
     if (self = [super init]) {
-        NSLog(@"%@", [[LSApplicationWorkspace defaultWorkspace] allApplications]);
+        
     }
     
     return self;
