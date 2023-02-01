@@ -4,15 +4,9 @@
 <dict>
 	<key>com.apple.private.AuthorizationServices</key>
 	<dict>
-		<key>com.apple.security.assessment.update</key>
-		<true/>
-		<key>system.install.app-store-software</key>
-		<true/>
 		<key>com.apple.uninstalld.uninstall</key>
 		<true/>
 	</dict>
-	<key>com.apple.private.dmd.policy</key>
-	<true/>
 	<key>com.apple.security.app-sandbox</key>
 	<true/>
 	<key>com.apple.security.files.user-selected.read-write</key>

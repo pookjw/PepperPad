@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		4F51C99A2980272300B80AFD /* swizzle.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F51C9982980272300B80AFD /* swizzle.m */; };
+		4F549E1C298964CF0089245F /* AppLauncherCollectionViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F549E1B298964CF0089245F /* AppLauncherCollectionViewLayout.m */; };
 		4FF3F8282973C2B4008DE74D /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FF3F8272973C2B4008DE74D /* AppDelegate.m */; };
 		4FF3F82D2973C2B5008DE74D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4FF3F82C2973C2B5008DE74D /* Assets.xcassets */; };
 		4FF3F8322973C2B5008DE74D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FF3F8312973C2B5008DE74D /* main.m */; };
@@ -22,6 +23,8 @@
 		4F1E60FD298947830051D5C2 /* LSIconResource.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LSIconResource.h; sourceTree = "<group>"; };
 		4F51C9982980272300B80AFD /* swizzle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = swizzle.m; sourceTree = "<group>"; };
 		4F51C9992980272300B80AFD /* swizzle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = swizzle.h; sourceTree = "<group>"; };
+		4F549E1A298964CF0089245F /* AppLauncherCollectionViewLayout.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppLauncherCollectionViewLayout.h; sourceTree = "<group>"; };
+		4F549E1B298964CF0089245F /* AppLauncherCollectionViewLayout.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppLauncherCollectionViewLayout.m; sourceTree = "<group>"; };
 		4F6054362973DC4800AF6187 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4FF3F8232973C2B4008DE74D /* PepperPad.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PepperPad.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4FF3F8262973C2B4008DE74D /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -138,6 +141,8 @@
 				4FF3F8662973CD65008DE74D /* AppLauncherViewController.m */,
 				4FF5942B2986EADD00A4E9FC /* AppLauncherViewModel.h */,
 				4FF5942C2986EADD00A4E9FC /* AppLauncherViewModel.m */,
+				4F549E1A298964CF0089245F /* AppLauncherCollectionViewLayout.h */,
+				4F549E1B298964CF0089245F /* AppLauncherCollectionViewLayout.m */,
 			);
 			path = AppLauncher;
 			sourceTree = "<group>";
@@ -227,6 +232,7 @@
 				4FF3F8322973C2B5008DE74D /* main.m in Sources */,
 				4FF3F83B2973C3C6008DE74D /* MainWindowController.m in Sources */,
 				4FF3F8672973CD65008DE74D /* AppLauncherViewController.m in Sources */,
+				4F549E1C298964CF0089245F /* AppLauncherCollectionViewLayout.m in Sources */,
 				4FF5942D2986EADD00A4E9FC /* AppLauncherViewModel.m in Sources */,
 				4FF3F8282973C2B4008DE74D /* AppDelegate.m in Sources */,
 				4F51C99A2980272300B80AFD /* swizzle.m in Sources */,
