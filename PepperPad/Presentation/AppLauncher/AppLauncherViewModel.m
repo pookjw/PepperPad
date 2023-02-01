@@ -13,12 +13,18 @@
 
 @implementation AppLauncherViewModel
 
-- (instancetype)init {
-    if (self = [super init]) {
-        
+- (instancetype)initWithDataSource:(AppLauncherDataSource *)dataSource {
+    if (self = [self init]) {
+        [self->_dataSource release];
+        self->_dataSource = [dataSource retain];
     }
     
     return self;
+}
+
+- (void)dealloc {
+    [_dataSource release];
+    [super dealloc];
 }
 
 @end

@@ -81,9 +81,9 @@
 }
 
 - (void)configureViewModel {
-    AppLauncherViewModel *viewModel = [AppLauncherViewModel new];
-    self.viewModel = viewModel;
-    [viewModel release];
+//    AppLauncherViewModel *viewModel = [AppLauncherViewModel new];
+//    self.viewModel = viewModel;
+//    [viewModel release];
 }
 
 @end
