@@ -10,7 +10,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface LSIconResource : NSObject
-@property (retain) NSString* resourceRelativePath;
+@property (retain) NSString * _Nullable resourceRelativePath;
 + (id)resourceForURL:(id)arg1;
 @end
 

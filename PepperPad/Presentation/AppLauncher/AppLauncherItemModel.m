@@ -9,10 +9,13 @@
 
 @implementation AppLauncherItemModel
 
-- (instancetype)initWithApplicationProxy:(LSApplicationProxy *)applicationProxy {
+- (instancetype)initWithApplicationProxy:(LSApplicationProxy *)applicationProxy iconImage:(NSImage *)iconImage {
     if (self = [self init]) {
         [self->_applicationProxy release];
         self->_applicationProxy = [applicationProxy retain];
+        
+        [self->_iconImage release];
+        self->_iconImage = [iconImage retain];
     }
     
     return self;
@@ -20,6 +23,7 @@
 
 - (void)dealloc {
     [_applicationProxy release];
+    [_iconImage release];
     [super dealloc];
 }
 

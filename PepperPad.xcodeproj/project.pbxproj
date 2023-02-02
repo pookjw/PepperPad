@@ -11,6 +11,10 @@
 		4F549E1C298964CF0089245F /* AppLauncherCollectionViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F549E1B298964CF0089245F /* AppLauncherCollectionViewLayout.m */; };
 		4F92378F298A8CF4003FB238 /* AppLauncherSectionModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F92378E298A8CF4003FB238 /* AppLauncherSectionModel.m */; };
 		4F923792298A8CFE003FB238 /* AppLauncherItemModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F923791298A8CFE003FB238 /* AppLauncherItemModel.m */; };
+		4F92379B298BFED3003FB238 /* NSCollectionViewDiffableDataSource+ApplySnapshotAndWait.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F923799298BFED3003FB238 /* NSCollectionViewDiffableDataSource+ApplySnapshotAndWait.m */; };
+		4F92379E298C033F003FB238 /* AppLauncherCollectionViewItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F92379D298C033F003FB238 /* AppLauncherCollectionViewItem.m */; };
+		4F9237A1298C0913003FB238 /* NSTextField+ApplyLabelStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F92379F298C0913003FB238 /* NSTextField+ApplyLabelStyle.m */; };
+		4F9237A4298C0F12003FB238 /* NSBox+ApplySimpleBoxStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F9237A2298C0F12003FB238 /* NSBox+ApplySimpleBoxStyle.m */; };
 		4FF3F8282973C2B4008DE74D /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FF3F8272973C2B4008DE74D /* AppDelegate.m */; };
 		4FF3F82D2973C2B5008DE74D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4FF3F82C2973C2B5008DE74D /* Assets.xcassets */; };
 		4FF3F8322973C2B5008DE74D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FF3F8312973C2B5008DE74D /* main.m */; };
@@ -32,6 +36,15 @@
 		4F92378E298A8CF4003FB238 /* AppLauncherSectionModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppLauncherSectionModel.m; sourceTree = "<group>"; };
 		4F923790298A8CFE003FB238 /* AppLauncherItemModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppLauncherItemModel.h; sourceTree = "<group>"; };
 		4F923791298A8CFE003FB238 /* AppLauncherItemModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppLauncherItemModel.m; sourceTree = "<group>"; };
+		4F923793298BF77B003FB238 /* NSCollectionViewDiffableDataSource+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSCollectionViewDiffableDataSource+Private.h"; sourceTree = "<group>"; };
+		4F923799298BFED3003FB238 /* NSCollectionViewDiffableDataSource+ApplySnapshotAndWait.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSCollectionViewDiffableDataSource+ApplySnapshotAndWait.m"; sourceTree = "<group>"; };
+		4F92379A298BFED3003FB238 /* NSCollectionViewDiffableDataSource+ApplySnapshotAndWait.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSCollectionViewDiffableDataSource+ApplySnapshotAndWait.h"; sourceTree = "<group>"; };
+		4F92379C298C033F003FB238 /* AppLauncherCollectionViewItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppLauncherCollectionViewItem.h; sourceTree = "<group>"; };
+		4F92379D298C033F003FB238 /* AppLauncherCollectionViewItem.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppLauncherCollectionViewItem.m; sourceTree = "<group>"; };
+		4F92379F298C0913003FB238 /* NSTextField+ApplyLabelStyle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSTextField+ApplyLabelStyle.m"; sourceTree = "<group>"; };
+		4F9237A0298C0913003FB238 /* NSTextField+ApplyLabelStyle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSTextField+ApplyLabelStyle.h"; sourceTree = "<group>"; };
+		4F9237A2298C0F12003FB238 /* NSBox+ApplySimpleBoxStyle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSBox+ApplySimpleBoxStyle.m"; sourceTree = "<group>"; };
+		4F9237A3298C0F12003FB238 /* NSBox+ApplySimpleBoxStyle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSBox+ApplySimpleBoxStyle.h"; sourceTree = "<group>"; };
 		4FF3F8232973C2B4008DE74D /* PepperPad.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PepperPad.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4FF3F8262973C2B4008DE74D /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		4FF3F8272973C2B4008DE74D /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -63,6 +76,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4F923798298BFEC7003FB238 /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				4F92379A298BFED3003FB238 /* NSCollectionViewDiffableDataSource+ApplySnapshotAndWait.h */,
+				4F923799298BFED3003FB238 /* NSCollectionViewDiffableDataSource+ApplySnapshotAndWait.m */,
+				4F9237A0298C0913003FB238 /* NSTextField+ApplyLabelStyle.h */,
+				4F92379F298C0913003FB238 /* NSTextField+ApplyLabelStyle.m */,
+				4F9237A3298C0F12003FB238 /* NSBox+ApplySimpleBoxStyle.h */,
+				4F9237A2298C0F12003FB238 /* NSBox+ApplySimpleBoxStyle.m */,
+			);
+			path = Categories;
+			sourceTree = "<group>";
+		};
 		4FF3F81A2973C2B4008DE74D = {
 			isa = PBXGroup;
 			children = (
@@ -85,6 +111,7 @@
 				4FF594262986E71E00A4E9FC /* Application */,
 				4FF594272986E73300A4E9FC /* Resources */,
 				4FF594252986E71500A4E9FC /* Utils */,
+				4F923798298BFEC7003FB238 /* Categories */,
 				4FF5942E2986EAF500A4E9FC /* Private */,
 				4FF594282986E75700A4E9FC /* Presentation */,
 				4FF3F8312973C2B5008DE74D /* main.m */,
@@ -153,6 +180,8 @@
 				4F923791298A8CFE003FB238 /* AppLauncherItemModel.m */,
 				4F549E1A298964CF0089245F /* AppLauncherCollectionViewLayout.h */,
 				4F549E1B298964CF0089245F /* AppLauncherCollectionViewLayout.m */,
+				4F92379C298C033F003FB238 /* AppLauncherCollectionViewItem.h */,
+				4F92379D298C033F003FB238 /* AppLauncherCollectionViewItem.m */,
 			);
 			path = AppLauncher;
 			sourceTree = "<group>";
@@ -166,6 +195,7 @@
 				4F1E60FC298923210051D5C2 /* LSBundleProxy.h */,
 				4FF594302986F3EE00A4E9FC /* LSApplicationProxy.h */,
 				4F1E60FD298947830051D5C2 /* LSIconResource.h */,
+				4F923793298BF77B003FB238 /* NSCollectionViewDiffableDataSource+Private.h */,
 			);
 			path = Private;
 			sourceTree = "<group>";
@@ -239,14 +269,18 @@
 			buildActionMask = 2147483647;
 			files = (
 				4FFE0BCF2980249C00737695 /* NSObject+Foundation_IvarDescription.mm in Sources */,
+				4F9237A4298C0F12003FB238 /* NSBox+ApplySimpleBoxStyle.m in Sources */,
 				4FF3F8322973C2B5008DE74D /* main.m in Sources */,
 				4FF3F83B2973C3C6008DE74D /* MainWindowController.m in Sources */,
 				4FF3F8672973CD65008DE74D /* AppLauncherViewController.m in Sources */,
 				4F549E1C298964CF0089245F /* AppLauncherCollectionViewLayout.m in Sources */,
 				4FF5942D2986EADD00A4E9FC /* AppLauncherViewModel.m in Sources */,
 				4FF3F8282973C2B4008DE74D /* AppDelegate.m in Sources */,
+				4F9237A1298C0913003FB238 /* NSTextField+ApplyLabelStyle.m in Sources */,
+				4F92379E298C033F003FB238 /* AppLauncherCollectionViewItem.m in Sources */,
 				4F92378F298A8CF4003FB238 /* AppLauncherSectionModel.m in Sources */,
 				4F923792298A8CFE003FB238 /* AppLauncherItemModel.m in Sources */,
+				4F92379B298BFED3003FB238 /* NSCollectionViewDiffableDataSource+ApplySnapshotAndWait.m in Sources */,
 				4F51C99A2980272300B80AFD /* swizzle.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

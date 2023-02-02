@@ -7,8 +7,10 @@
 
 #import "AppLauncherViewController.h"
 #import "AppLauncherViewModel.h"
+#import "AppLauncherCollectionViewLayout.h"
+#import "AppLauncherCollectionViewItem.h"
 
-@interface AppLauncherViewController ()
+@interface AppLauncherViewController () <NSCollectionViewDelegate>
 @property (retain) NSVisualEffectView *visualEffectView;
 @property (retain) NSScrollView *scrollView;
 @property (retain) NSCollectionView *collectionView;
@@ -77,13 +79,37 @@
 }
 
 - (void)configureCollectionView {
+    AppLauncherCollectionViewLayout *collectionViewLayout = [AppLauncherCollectionViewLayout new];
+    NSCollectionView *collectionView = [NSCollectionView new];
+    collectionView.collectionViewLayout = collectionViewLayout;
+    [collectionViewLayout release];
     
+    collectionView.backgroundColors = @[NSColor.clearColor];
+    [collectionView registerClass:AppLauncherCollectionViewItem.class forItemWithIdentifier:NSUserInterfaceItemIdentifierAppLauncherCollectionViewItem];
+    collectionView.delegate = self;
+    
+    self.scrollView.documentView = collectionView;
+    self.collectionView = collectionView;
+    [collectionView release];
 }
 
 - (void)configureViewModel {
-//    AppLauncherViewModel *viewModel = [AppLauncherViewModel new];
-//    self.viewModel = viewModel;
-//    [viewModel release];
+    AppLauncherDataSource *dataSource = [self createDataSource];
+    AppLauncherViewModel *viewModel = [[AppLauncherViewModel alloc] initWithDataSource:dataSource];
+    self.viewModel = viewModel;
+    [viewModel release];
 }
+
+- (AppLauncherDataSource *)createDataSource {
+    AppLauncherDataSource *dataSource = [[AppLauncherDataSource alloc] initWithCollectionView:self.collectionView itemProvider:^NSCollectionViewItem * _Nullable(NSCollectionView * _Nonnull collectionView, NSIndexPath * _Nonnull indexPath, AppLauncherItemModel * _Nonnull itemModel) {
+        AppLauncherCollectionViewItem *item = [collectionView makeItemWithIdentifier:NSUserInterfaceItemIdentifierAppLauncherCollectionViewItem forIndexPath:indexPath];
+        [item configureWithTitle:itemModel.applicationProxy.localizedName image:itemModel.iconImage];
+        return item;
+    }];
+    
+    return [dataSource autorelease];
+}
+
+#pragma mark - NSCollectionViewDelegate
 
 @end
