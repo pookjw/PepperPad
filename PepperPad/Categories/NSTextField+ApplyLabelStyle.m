@@ -13,7 +13,7 @@
     self.editable = NO;
     self.selectable = NO;
     self.bezeled = NO;
-    self.preferredMaxLayoutWidth = 0.0f;
+    self.preferredMaxLayoutWidth = 0.f;
     self.lineBreakMode = NSLineBreakByWordWrapping;
     self.drawsBackground = NO;
 }
