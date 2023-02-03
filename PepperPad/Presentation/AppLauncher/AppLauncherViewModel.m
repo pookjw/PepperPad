@@ -30,7 +30,7 @@
 
 - (void)dealloc {
     [_dataSource release];
-    [_queue release];
+    dispatch_release(_queue);
     [super dealloc];
 }
 
@@ -87,6 +87,26 @@
         [sectionModel release];
         
         [dataSource applySnapshotAndWait:snapshot animatingDifferences:YES];
+    });
+}
+
+- (void)openAppsForIndexPaths:(NSSet<NSIndexPath *> *)indexPaths {
+    AppLauncherDataSource *dataSource = self.dataSource;
+    
+    dispatch_async(self.queue, ^{
+        [indexPaths enumerateObjectsUsingBlock:^(NSIndexPath * _Nonnull obj, BOOL * _Nonnull stop) {
+            AppLauncherItemModel * _Nullable itemModel = [dataSource itemIdentifierForIndexPath:obj];
+            
+            if (itemModel == nil) return;
+            
+            NSWorkspaceOpenConfiguration *configuration = [NSWorkspaceOpenConfiguration configuration];
+            
+            [NSWorkspace.sharedWorkspace openURL:itemModel.applicationProxy.bundleURL configuration:configuration completionHandler:^(NSRunningApplication * _Nullable app, NSError * _Nullable error) {
+                if (error) {
+                    NSLog(@"%@", error);
+                }
+            }];;
+        }];
     });
 }
 

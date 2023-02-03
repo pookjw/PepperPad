@@ -18,6 +18,7 @@ typedef NSCollectionViewDiffableDataSource<AppLauncherSectionModel *, AppLaunche
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;
 - (instancetype)initWithDataSource:(AppLauncherDataSource *)dataSource;
+- (void)openAppsForIndexPaths:(NSSet<NSIndexPath *> *)indexPaths;
 @end
 
 NS_ASSUME_NONNULL_END

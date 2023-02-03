@@ -84,6 +84,7 @@
     collectionView.collectionViewLayout = collectionViewLayout;
     [collectionViewLayout release];
     
+    collectionView.selectable = YES;
     collectionView.backgroundColors = @[NSColor.clearColor];
     [collectionView registerClass:AppLauncherCollectionViewItem.class forItemWithIdentifier:NSUserInterfaceItemIdentifierAppLauncherCollectionViewItem];
     collectionView.delegate = self;
@@ -113,10 +114,7 @@
 #pragma mark - NSCollectionViewDelegate
 
 - (void)collectionView:(NSCollectionView *)collectionView didSelectItemsAtIndexPaths:(NSSet<NSIndexPath *> *)indexPaths {
-    [indexPaths enumerateObjectsUsingBlock:^(NSIndexPath * _Nonnull obj, BOOL * _Nonnull stop) {
-        
-    }];
-    
+    [self.viewModel openAppsForIndexPaths:indexPaths];
     [collectionView deselectItemsAtIndexPaths:indexPaths];
 }
 
