@@ -95,6 +95,8 @@
     
     dispatch_async(self.queue, ^{
         [indexPaths enumerateObjectsUsingBlock:^(NSIndexPath * _Nonnull obj, BOOL * _Nonnull stop) {
+            NSAutoreleasePool *pool = [NSAutoreleasePool new];
+            
             AppLauncherItemModel * _Nullable itemModel = [dataSource itemIdentifierForIndexPath:obj];
             
             if (itemModel == nil) return;
@@ -106,6 +108,8 @@
                     NSLog(@"%@", error);
                 }
             }];;
+            
+            [pool release];
         }];
     });
 }
