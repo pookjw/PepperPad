@@ -10,6 +10,8 @@
 #import "LSIconResource.h"
 #import "NSCollectionViewDiffableDataSource+ApplySnapshotAndWait.h"
 
+#define APP_LAUNCHER_VIEW_MODEL_SERIAL_QUEIE_LABEL "com.pookjw.PepperPad.AppLauncherViewModel"
+
 @interface AppLauncherViewModel ()
 @property (retain) dispatch_queue_t queue;
 @end
@@ -35,7 +37,7 @@
 }
 
 - (void)configureQueue {
-    dispatch_queue_t queue = dispatch_queue_create("com.pookjw.PepperPad.AppLauncherViewModel", DISPATCH_QUEUE_SERIAL);
+    dispatch_queue_t queue = dispatch_queue_create(APP_LAUNCHER_VIEW_MODEL_SERIAL_QUEIE_LABEL, DISPATCH_QUEUE_SERIAL);
     self.queue = queue;
     dispatch_release(queue);
 }
