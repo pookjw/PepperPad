@@ -35,8 +35,9 @@
     imageView.translatesAutoresizingMaskIntoConstraints = NO;
     [self.view addSubview:imageView];
     [NSLayoutConstraint activateConstraints:@[
-        [imageView.centerYAnchor constraintEqualToAnchor:self.view.centerYAnchor],
-        [imageView.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor]
+        [imageView.topAnchor constraintEqualToAnchor:self.view.topAnchor],
+        [imageView.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor],
+        [imageView.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor]
     ]];
     
     self.imageView = imageView;

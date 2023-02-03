@@ -112,4 +112,12 @@
 
 #pragma mark - NSCollectionViewDelegate
 
+- (void)collectionView:(NSCollectionView *)collectionView didSelectItemsAtIndexPaths:(NSSet<NSIndexPath *> *)indexPaths {
+    [indexPaths enumerateObjectsUsingBlock:^(NSIndexPath * _Nonnull obj, BOOL * _Nonnull stop) {
+        
+    }];
+    
+    [collectionView deselectItemsAtIndexPaths:indexPaths];
+}
+
 @end
