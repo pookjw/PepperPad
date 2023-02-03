@@ -89,6 +89,7 @@
         [sectionModel release];
         
         [dataSource applySnapshotAndWait:snapshot animatingDifferences:YES];
+        [snapshot release];
     });
 }
 
@@ -100,7 +101,6 @@
             NSAutoreleasePool *pool = [NSAutoreleasePool new];
             
             AppLauncherItemModel * _Nullable itemModel = [dataSource itemIdentifierForIndexPath:obj];
-            
             if (itemModel == nil) return;
             
             NSWorkspaceOpenConfiguration *configuration = [NSWorkspaceOpenConfiguration configuration];
