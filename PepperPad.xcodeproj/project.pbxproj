@@ -10,6 +10,7 @@
 		4F02B6CD298CE563005D30C6 /* MainWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F02B6CC298CE563005D30C6 /* MainWindow.m */; };
 		4F0CD43A298E454400FD7D91 /* NSAlert+ApplyErrorStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F0CD439298E454400FD7D91 /* NSAlert+ApplyErrorStyle.m */; };
 		4F0CD43D298E543C00FD7D91 /* NSDiffableDataSourceSnapshot+sort.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F0CD43C298E543C00FD7D91 /* NSDiffableDataSourceSnapshot+sort.m */; };
+		4F0CD441298E586400FD7D91 /* PPAplicationWorkspace.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F0CD440298E586400FD7D91 /* PPAplicationWorkspace.m */; };
 		4F51C99A2980272300B80AFD /* swizzle.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F51C9982980272300B80AFD /* swizzle.m */; };
 		4F549E1C298964CF0089245F /* AppLauncherCollectionViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F549E1B298964CF0089245F /* AppLauncherCollectionViewLayout.m */; };
 		4F92378F298A8CF4003FB238 /* AppLauncherSectionModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F92378E298A8CF4003FB238 /* AppLauncherSectionModel.m */; };
@@ -33,6 +34,8 @@
 		4F0CD439298E454400FD7D91 /* NSAlert+ApplyErrorStyle.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSAlert+ApplyErrorStyle.m"; sourceTree = "<group>"; };
 		4F0CD43B298E543C00FD7D91 /* NSDiffableDataSourceSnapshot+sort.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDiffableDataSourceSnapshot+sort.h"; sourceTree = "<group>"; };
 		4F0CD43C298E543C00FD7D91 /* NSDiffableDataSourceSnapshot+sort.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDiffableDataSourceSnapshot+sort.m"; sourceTree = "<group>"; };
+		4F0CD43F298E586400FD7D91 /* PPAplicationWorkspace.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PPAplicationWorkspace.h; sourceTree = "<group>"; };
+		4F0CD440298E586400FD7D91 /* PPAplicationWorkspace.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PPAplicationWorkspace.m; sourceTree = "<group>"; };
 		4F1E60FC298923210051D5C2 /* LSBundleProxy.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LSBundleProxy.h; sourceTree = "<group>"; };
 		4F1E60FD298947830051D5C2 /* LSIconResource.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LSIconResource.h; sourceTree = "<group>"; };
 		4F51C9982980272300B80AFD /* swizzle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = swizzle.m; sourceTree = "<group>"; };
@@ -82,6 +85,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4F0CD43E298E570000FD7D91 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				4F0CD43F298E586400FD7D91 /* PPAplicationWorkspace.h */,
+				4F0CD440298E586400FD7D91 /* PPAplicationWorkspace.m */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
 		4F923798298BFEC7003FB238 /* Categories */ = {
 			isa = PBXGroup;
 			children = (
@@ -121,6 +133,7 @@
 				4FF594262986E71E00A4E9FC /* Application */,
 				4FF594272986E73300A4E9FC /* Resources */,
 				4FF594252986E71500A4E9FC /* Utils */,
+				4F0CD43E298E570000FD7D91 /* Services */,
 				4F923798298BFEC7003FB238 /* Categories */,
 				4FF5942E2986EAF500A4E9FC /* Private */,
 				4FF594282986E75700A4E9FC /* Presentation */,
@@ -287,6 +300,7 @@
 				4FF5942D2986EADD00A4E9FC /* AppLauncherViewModel.m in Sources */,
 				4FF3F8282973C2B4008DE74D /* AppDelegate.m in Sources */,
 				4F0CD43A298E454400FD7D91 /* NSAlert+ApplyErrorStyle.m in Sources */,
+				4F0CD441298E586400FD7D91 /* PPAplicationWorkspace.m in Sources */,
 				4F9237A1298C0913003FB238 /* NSTextField+ApplyLabelStyle.m in Sources */,
 				4F0CD43D298E543C00FD7D91 /* NSDiffableDataSourceSnapshot+sort.m in Sources */,
 				4F92379E298C033F003FB238 /* AppLauncherCollectionViewItem.m in Sources */,

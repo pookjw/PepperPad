@@ -6,16 +6,16 @@
 //
 
 #import "AppLauncherViewModel.h"
-#import "LSApplicationWorkspace.h"
+#import "PPAplicationWorkspace.h"
 #import "LSIconResource.h"
 #import "NSCollectionViewDiffableDataSource+ApplySnapshotAndWait.h"
 #import "NSDiffableDataSourceSnapshot+sort.h"
 
 #define APP_LAUNCHER_VIEW_MODEL_SERIAL_QUEIE_LABEL "com.pookjw.PepperPad.AppLauncherViewModel"
+
 typedef NSDiffableDataSourceSnapshot<AppLauncherSectionModel *, AppLauncherItemModel *> AppLauncherDataSourceSnapshot;
 
 @interface AppLauncherViewModel ()
-@property (readonly) NSArray<NSURL *> *allowedApplicationBaseURLs;
 @property (retain) dispatch_queue_t queue;
 @property void *runningApplicationsObservationContext;
 @end
@@ -54,15 +54,6 @@ typedef NSDiffableDataSourceSnapshot<AppLauncherSectionModel *, AppLauncherItemM
     }
 }
 
-- (NSArray<NSURL *> *)allowedApplicationBaseURLs {
-    return @[
-        [NSURL fileURLWithPath:@"/System/Applications/" isDirectory:YES],
-        [NSURL fileURLWithPath:@"/Applications/" isDirectory:YES],
-        [NSURL fileURLWithPath:@"/System/Volumes/Preboot/Cryptexes/App/System/Applications/" isDirectory:YES],
-        [NSFileManager.defaultManager.homeDirectoryForCurrentUser URLByAppendingPathComponent:@"Applications" isDirectory:YES]
-    ];
-}
-
 - (void)configureQueue {
     dispatch_queue_t queue = dispatch_queue_create(APP_LAUNCHER_VIEW_MODEL_SERIAL_QUEIE_LABEL, DISPATCH_QUEUE_SERIAL);
     self.queue = queue;
@@ -75,7 +66,6 @@ typedef NSDiffableDataSourceSnapshot<AppLauncherSectionModel *, AppLauncherItemM
 
 - (void)loadDataSource {
     AppLauncherDataSource *dataSource = self.dataSource;
-    NSArray<NSURL *> *allowedApplicationBaseURLs = self.allowedApplicationBaseURLs;
     
     dispatch_async(self.queue, ^{
         AppLauncherDataSourceSnapshot *snapshot = [AppLauncherDataSourceSnapshot new];
@@ -83,30 +73,10 @@ typedef NSDiffableDataSourceSnapshot<AppLauncherSectionModel *, AppLauncherItemM
         AppLauncherSectionModel *sectionModel = [[AppLauncherSectionModel alloc] initWithType:AppLauncherSectionModelAppsType];
         [snapshot appendSectionsWithIdentifiers:@[sectionModel]];
         
-        NSArray<LSApplicationProxy *> *allProxies = [[LSApplicationWorkspace defaultWorkspace] allApplications];
+        NSArray<LSApplicationProxy *> *allAllowedApplications = PPAplicationWorkspace.sharedInstance.allAllowedApplications;
         NSArray<NSRunningApplication *> *runningApplications = NSWorkspace.sharedWorkspace.runningApplications;
         
-        [allProxies enumerateObjectsUsingBlock:^(LSApplicationProxy * _Nonnull proxy, NSUInteger idx, BOOL * _Nonnull stop) {
-            NSURLComponents *bundleURLComponents = [[NSURLComponents alloc] initWithURL:proxy.bundleURL resolvingAgainstBaseURL:NO];
-            NSString *bundleURLPath = bundleURLComponents.path;
-            [bundleURLComponents release];
-            
-            __block BOOL isTargetApplication = NO;
-            [allowedApplicationBaseURLs enumerateObjectsUsingBlock:^(NSURL * _Nonnull allowedApplicationBaseURL, NSUInteger idx, BOOL * _Nonnull stop) {
-                NSURLComponents *baseURLComponents = [[NSURLComponents alloc] initWithURL:allowedApplicationBaseURL resolvingAgainstBaseURL:NO];
-                NSString *baseURLPath = baseURLComponents.path;
-                [baseURLComponents release];
-                
-                if ([bundleURLPath hasPrefix:baseURLPath]) {
-                    isTargetApplication = YES;
-                    *stop = YES;
-                }
-            }];
-            
-            if (!isTargetApplication) {
-                return;
-            }
-            
+        [allAllowedApplications enumerateObjectsUsingBlock:^(LSApplicationProxy * _Nonnull proxy, NSUInteger idx, BOOL * _Nonnull stop) {
             LSIconResource *iconResource = [LSIconResource resourceForURL:proxy.bundleURL];
             NSString * _Nullable resourceRelativePath = iconResource.resourceRelativePath;
             NSImage * __autoreleasing _Nullable iconImage = nil;
@@ -145,7 +115,7 @@ typedef NSDiffableDataSourceSnapshot<AppLauncherSectionModel *, AppLauncherItemM
         }];
         
         [snapshot sortItemsWithSectionIdentifiers:@[sectionModel] usingComparator:^NSComparisonResult(AppLauncherItemModel * _Nonnull obj1, AppLauncherItemModel * _Nonnull obj2) {
-            return [obj1.applicationProxy.localizedName compare:obj2.applicationProxy.localizedName];
+            return [obj1.applicationProxy.localizedName compare:obj2.applicationProxy.localizedName options:NSCaseInsensitiveSearch];
         }];
         
         [sectionModel release];
