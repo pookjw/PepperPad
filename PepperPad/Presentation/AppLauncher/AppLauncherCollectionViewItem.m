@@ -7,11 +7,18 @@
 
 #import "AppLauncherCollectionViewItem.h"
 #import "NSTextField+ApplyLabelStyle.h"
+#import "NSBox+ApplySimpleBoxStyle.h"
 
 @interface AppLauncherCollectionViewItem ()
+@property (retain) NSBox *runningIndicatorBox;
 @end
 
 @implementation AppLauncherCollectionViewItem
+
+- (void)dealloc {
+    [_runningIndicatorBox release];
+    [super dealloc];
+}
 
 - (void)loadView {
     NSView *view = [NSView new];
@@ -21,13 +28,30 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self configureRunningIndicatorBox];
     [self configureImageView];
     [self configureTextField];
 }
 
-- (void)configureWithTitle:(NSString *)title image:(NSImage *)image {
+- (void)configureWithTitle:(NSString *)title image:(NSImage *)image isRunning:(BOOL)isRunning {
+    self.runningIndicatorBox.fillColor = isRunning ? NSColor.systemPurpleColor : NSColor.clearColor;
     self.textField.stringValue = title;
     self.imageView.image = image;
+}
+
+- (void)configureRunningIndicatorBox {
+    NSBox *runningIndicatorBox = [NSBox new];
+    [runningIndicatorBox applySimpleBoxStyle];
+    runningIndicatorBox.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.view addSubview:runningIndicatorBox];
+    [NSLayoutConstraint activateConstraints:@[
+        [runningIndicatorBox.topAnchor constraintEqualToAnchor:self.view.topAnchor],
+        [runningIndicatorBox.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor],
+        [runningIndicatorBox.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor]
+    ]];
+    
+    self.runningIndicatorBox = runningIndicatorBox;
+    [runningIndicatorBox release];
 }
 
 - (void)configureImageView {
@@ -36,7 +60,7 @@
     [self.view addSubview:imageView];
     [NSLayoutConstraint activateConstraints:@[
         [imageView.topAnchor constraintEqualToAnchor:self.view.topAnchor],
-        [imageView.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor],
+        [imageView.leadingAnchor constraintEqualToAnchor:self.runningIndicatorBox.trailingAnchor],
         [imageView.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor]
     ]];
     

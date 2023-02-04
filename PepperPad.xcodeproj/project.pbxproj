@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		4F02B6CD298CE563005D30C6 /* MainWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F02B6CC298CE563005D30C6 /* MainWindow.m */; };
+		4F0CD43A298E454400FD7D91 /* NSAlert+ApplyErrorStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F0CD439298E454400FD7D91 /* NSAlert+ApplyErrorStyle.m */; };
 		4F51C99A2980272300B80AFD /* swizzle.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F51C9982980272300B80AFD /* swizzle.m */; };
 		4F549E1C298964CF0089245F /* AppLauncherCollectionViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F549E1B298964CF0089245F /* AppLauncherCollectionViewLayout.m */; };
 		4F92378F298A8CF4003FB238 /* AppLauncherSectionModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F92378E298A8CF4003FB238 /* AppLauncherSectionModel.m */; };
@@ -27,6 +28,8 @@
 /* Begin PBXFileReference section */
 		4F02B6CB298CE563005D30C6 /* MainWindow.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MainWindow.h; sourceTree = "<group>"; };
 		4F02B6CC298CE563005D30C6 /* MainWindow.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MainWindow.m; sourceTree = "<group>"; };
+		4F0CD438298E451C00FD7D91 /* NSAlert+ApplyErrorStyle.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSAlert+ApplyErrorStyle.h"; sourceTree = "<group>"; };
+		4F0CD439298E454400FD7D91 /* NSAlert+ApplyErrorStyle.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSAlert+ApplyErrorStyle.m"; sourceTree = "<group>"; };
 		4F1E60FC298923210051D5C2 /* LSBundleProxy.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LSBundleProxy.h; sourceTree = "<group>"; };
 		4F1E60FD298947830051D5C2 /* LSIconResource.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LSIconResource.h; sourceTree = "<group>"; };
 		4F51C9982980272300B80AFD /* swizzle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = swizzle.m; sourceTree = "<group>"; };
@@ -85,6 +88,8 @@
 				4F92379F298C0913003FB238 /* NSTextField+ApplyLabelStyle.m */,
 				4F9237A3298C0F12003FB238 /* NSBox+ApplySimpleBoxStyle.h */,
 				4F9237A2298C0F12003FB238 /* NSBox+ApplySimpleBoxStyle.m */,
+				4F0CD438298E451C00FD7D91 /* NSAlert+ApplyErrorStyle.h */,
+				4F0CD439298E454400FD7D91 /* NSAlert+ApplyErrorStyle.m */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -276,6 +281,7 @@
 				4F549E1C298964CF0089245F /* AppLauncherCollectionViewLayout.m in Sources */,
 				4FF5942D2986EADD00A4E9FC /* AppLauncherViewModel.m in Sources */,
 				4FF3F8282973C2B4008DE74D /* AppDelegate.m in Sources */,
+				4F0CD43A298E454400FD7D91 /* NSAlert+ApplyErrorStyle.m in Sources */,
 				4F9237A1298C0913003FB238 /* NSTextField+ApplyLabelStyle.m in Sources */,
 				4F92379E298C033F003FB238 /* AppLauncherCollectionViewItem.m in Sources */,
 				4F92378F298A8CF4003FB238 /* AppLauncherSectionModel.m in Sources */,

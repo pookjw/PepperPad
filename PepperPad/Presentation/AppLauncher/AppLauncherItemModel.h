@@ -13,9 +13,10 @@ NS_ASSUME_NONNULL_BEGIN
 @interface AppLauncherItemModel : NSObject
 @property (readonly, retain) LSApplicationProxy *applicationProxy;
 @property (readonly, retain) NSImage *iconImage;
+@property (assign) BOOL isRunning;
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;
-- (instancetype)initWithApplicationProxy:(LSApplicationProxy *)applicationProxy iconImage:(NSImage *)iconImage;
+- (instancetype)initWithApplicationProxy:(LSApplicationProxy *)applicationProxy iconImage:(NSImage *)iconImage isRunning:(BOOL)isRunning;
 @end
 
 NS_ASSUME_NONNULL_END

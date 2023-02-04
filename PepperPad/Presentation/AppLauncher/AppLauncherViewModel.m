@@ -11,9 +11,11 @@
 #import "NSCollectionViewDiffableDataSource+ApplySnapshotAndWait.h"
 
 #define APP_LAUNCHER_VIEW_MODEL_SERIAL_QUEIE_LABEL "com.pookjw.PepperPad.AppLauncherViewModel"
+typedef NSDiffableDataSourceSnapshot<AppLauncherSectionModel *, AppLauncherItemModel *> AppLauncherDataSourceSnapshot;
 
 @interface AppLauncherViewModel ()
 @property (retain) dispatch_queue_t queue;
+@property void *runningApplicationsObservationContext;
 @end
 
 @implementation AppLauncherViewModel
@@ -22,18 +24,32 @@
     if (self = [self init]) {
         [self->_dataSource release];
         self->_dataSource = [dataSource retain];
+        self.runningApplicationsObservationContext = malloc(sizeof(void *));
         
         [self configureQueue];
         [self loadDataSource];
+        [self bind];
     }
     
     return self;
 }
 
 - (void)dealloc {
+    [NSWorkspace.sharedWorkspace removeObserver:self forKeyPath:@"runningApplications" context:_runningApplicationsObservationContext];
+    free(self.runningApplicationsObservationContext);
+    
     [_dataSource release];
     dispatch_release(_queue);
+    
     [super dealloc];
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+    if (context == self.runningApplicationsObservationContext) {
+        [self updateDataSourceForRunningApplicationChanges];
+    } else {
+        [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
+    }
 }
 
 - (void)configureQueue {
@@ -42,26 +58,29 @@
     dispatch_release(queue);
 }
 
+- (void)bind {
+    [NSWorkspace.sharedWorkspace addObserver:self forKeyPath:@"runningApplications" options:NSKeyValueObservingOptionNew context:self.runningApplicationsObservationContext];
+}
+
 - (void)loadDataSource {
     AppLauncherDataSource *dataSource = self.dataSource;
     
     dispatch_async(self.queue, ^{
-        NSDiffableDataSourceSnapshot<AppLauncherSectionModel *, AppLauncherItemModel *> *snapshot = [NSDiffableDataSourceSnapshot<AppLauncherSectionModel *, AppLauncherItemModel *> new];
+        AppLauncherDataSourceSnapshot *snapshot = [AppLauncherDataSourceSnapshot new];
         
         AppLauncherSectionModel *sectionModel = [[AppLauncherSectionModel alloc] initWithType:AppLauncherSectionModelAppsType];
         [snapshot appendSectionsWithIdentifiers:@[sectionModel]];
         
         NSArray<LSApplicationProxy *> *allProxies = [[LSApplicationWorkspace defaultWorkspace] allApplications];
+        NSArray<NSRunningApplication *> *runningApplications = NSWorkspace.sharedWorkspace.runningApplications;
         
-        [allProxies enumerateObjectsUsingBlock:^(LSApplicationProxy * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-            NSAutoreleasePool *pool = [NSAutoreleasePool new];
-            
-            LSIconResource *iconResource = [LSIconResource resourceForURL:obj.bundleURL];
+        [allProxies enumerateObjectsUsingBlock:^(LSApplicationProxy * _Nonnull proxy, NSUInteger idx, BOOL * _Nonnull stop) {
+            LSIconResource *iconResource = [LSIconResource resourceForURL:proxy.bundleURL];
             NSString * _Nullable resourceRelativePath = iconResource.resourceRelativePath;
             NSImage * __autoreleasing _Nullable iconImage = nil;
             
             if (resourceRelativePath) {
-                NSURL *resourceAbsoluteURL = [obj.bundleURL URLByAppendingPathComponent:resourceRelativePath isDirectory:NO];
+                NSURL *resourceAbsoluteURL = [proxy.bundleURL URLByAppendingPathComponent:resourceRelativePath isDirectory:NO];
                 NSError * __autoreleasing _Nullable error = nil;
                 NSData *iconData = [[NSData alloc] initWithContentsOfURL:resourceAbsoluteURL options:0 error:&error];
                 
@@ -79,11 +98,18 @@
                 iconImage = [NSImage imageWithSystemSymbolName:@"app.dashed" accessibilityDescription:nil];
             }
             
-            AppLauncherItemModel *itemModel = [[AppLauncherItemModel alloc] initWithApplicationProxy:obj iconImage:iconImage];
+            __block BOOL isRunning = NO;
+            
+            [runningApplications enumerateObjectsUsingBlock:^(NSRunningApplication * _Nonnull runningApplication, NSUInteger idx, BOOL * _Nonnull stop) {
+                if ([proxy.bundleURL isEqual:runningApplication.bundleURL]) {
+                    isRunning = YES;
+                    *stop = YES;
+                }
+            }];
+            
+            AppLauncherItemModel *itemModel = [[AppLauncherItemModel alloc] initWithApplicationProxy:proxy iconImage:iconImage isRunning:isRunning];
             [snapshot appendItemsWithIdentifiers:@[itemModel] intoSectionWithIdentifier:sectionModel];
             [itemModel release];
-            
-            [pool release];
         }];
         
         [sectionModel release];
@@ -93,13 +119,40 @@
     });
 }
 
+- (void)updateDataSourceForRunningApplicationChanges {
+    AppLauncherDataSource *dataSource = self.dataSource;
+    
+    dispatch_async(self.queue, ^{
+        AppLauncherDataSourceSnapshot *snapshot = [dataSource.snapshot copy];
+        NSArray<NSRunningApplication *> *runningApplications = NSWorkspace.sharedWorkspace.runningApplications;
+        
+        [snapshot.itemIdentifiers enumerateObjectsUsingBlock:^(AppLauncherItemModel * _Nonnull itemModel, NSUInteger idx, BOOL * _Nonnull stop) {
+            __block BOOL isRunning = NO;
+            
+            [runningApplications enumerateObjectsUsingBlock:^(NSRunningApplication * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                if ([itemModel.applicationProxy.bundleURL isEqual:obj.bundleURL]) {
+                    isRunning = YES;
+                    *stop = YES;
+                }
+            }];
+            
+            if (itemModel.isRunning != isRunning) {
+                itemModel.isRunning = isRunning;
+                [snapshot reloadItemsWithIdentifiers:@[itemModel]];
+            }
+        }];
+        
+        [dataSource applySnapshotAndWait:snapshot animatingDifferences:YES];
+        
+        [snapshot release];
+    });
+}
+
 - (void)openAppsForIndexPaths:(NSSet<NSIndexPath *> *)indexPaths {
     AppLauncherDataSource *dataSource = self.dataSource;
     
     dispatch_async(self.queue, ^{
         [indexPaths enumerateObjectsUsingBlock:^(NSIndexPath * _Nonnull obj, BOOL * _Nonnull stop) {
-            NSAutoreleasePool *pool = [NSAutoreleasePool new];
-            
             AppLauncherItemModel * _Nullable itemModel = [dataSource itemIdentifierForIndexPath:obj];
             if (itemModel == nil) return;
             
@@ -107,13 +160,17 @@
             
             [NSWorkspace.sharedWorkspace openURL:itemModel.applicationProxy.bundleURL configuration:configuration completionHandler:^(NSRunningApplication * _Nullable app, NSError * _Nullable error) {
                 if (error) {
-                    NSLog(@"%@", error);
+                    [self postNotificationWithError:error];
                 }
             }];;
-            
-            [pool release];
         }];
     });
+}
+
+- (void)postNotificationWithError:(NSError *)error {
+    [NSNotificationCenter.defaultCenter postNotificationName:NSNotificationNameAppLauncherViewModelErrorOccured
+                                                      object:self
+                                                    userInfo:@{AppLauncherViewModelErrorOccuredErrorKey: error}];
 }
 
 @end

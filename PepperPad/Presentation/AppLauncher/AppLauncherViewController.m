@@ -9,6 +9,7 @@
 #import "AppLauncherViewModel.h"
 #import "AppLauncherCollectionViewLayout.h"
 #import "AppLauncherCollectionViewItem.h"
+#import "NSAlert+ApplyErrorStyle.h"
 
 @interface AppLauncherViewController () <NSCollectionViewDelegate>
 @property (retain) NSVisualEffectView *visualEffectView;
@@ -20,6 +21,7 @@
 @implementation AppLauncherViewController
 
 - (void)dealloc {
+    [NSNotificationCenter.defaultCenter removeObserver:self];
     [_visualEffectView release];
     [_scrollView release];
     [_collectionView release];
@@ -39,6 +41,7 @@
     [self configureScrollView];
     [self configureCollectionView];
     [self configureViewModel];
+    [self bind];
 }
 
 - (void)configureVisualEffectView {
@@ -104,11 +107,33 @@
 - (AppLauncherDataSource *)createDataSource {
     AppLauncherDataSource *dataSource = [[AppLauncherDataSource alloc] initWithCollectionView:self.collectionView itemProvider:^NSCollectionViewItem * _Nullable(NSCollectionView * _Nonnull collectionView, NSIndexPath * _Nonnull indexPath, AppLauncherItemModel * _Nonnull itemModel) {
         AppLauncherCollectionViewItem *item = [collectionView makeItemWithIdentifier:NSUserInterfaceItemIdentifierAppLauncherCollectionViewItem forIndexPath:indexPath];
-        [item configureWithTitle:itemModel.applicationProxy.localizedName image:itemModel.iconImage];
+        [item configureWithTitle:itemModel.applicationProxy.localizedName image:itemModel.iconImage isRunning:itemModel.isRunning];
         return item;
     }];
     
     return [dataSource autorelease];
+}
+
+- (void)bind {
+    [NSNotificationCenter.defaultCenter addObserver:self
+                                           selector:@selector(receivedErrorWithNotification:)
+                                               name:NSNotificationNameAppLauncherViewModelErrorOccured
+                                             object:self.viewModel];
+}
+
+- (void)receivedErrorWithNotification:(NSNotification *)notification {
+    NSError * _Nullable error = notification.userInfo[AppLauncherViewModelErrorOccuredErrorKey];
+    
+    if (error) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            NSAlert *alert = [NSAlert new];
+            [alert applyStyleWithError:error];
+            [alert beginSheetModalForWindow:self.view.window completionHandler:^(NSModalResponse returnCode) {
+                
+            }];
+            [alert release];
+        });
+    }
 }
 
 #pragma mark - NSCollectionViewDelegate
