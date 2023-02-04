@@ -6,16 +6,17 @@
 //
 
 #import "AppLauncherViewModel.h"
-#import "PPAplicationWorkspace.h"
+#import "PPApplicationWorkspace.h"
 #import "LSIconResource.h"
 #import "NSCollectionViewDiffableDataSource+ApplySnapshotAndWait.h"
 #import "NSDiffableDataSourceSnapshot+sort.h"
 
-#define APP_LAUNCHER_VIEW_MODEL_SERIAL_QUEIE_LABEL "com.pookjw.PepperPad.AppLauncherViewModel"
+#define APP_LAUNCHER_VIEW_MODEL_SERIAL_QUEUE_LABEL "com.pookjw.PepperPad.AppLauncherViewModel"
 
 typedef NSDiffableDataSourceSnapshot<AppLauncherSectionModel *, AppLauncherItemModel *> AppLauncherDataSourceSnapshot;
 
 @interface AppLauncherViewModel ()
+@property (retain) PPApplicationWorkspace* ppApplicationWorkspace;
 @property (retain) dispatch_queue_t queue;
 @property void *runningApplicationsObservationContext;
 @end
@@ -28,6 +29,7 @@ typedef NSDiffableDataSourceSnapshot<AppLauncherSectionModel *, AppLauncherItemM
         self->_dataSource = [dataSource retain];
         self.runningApplicationsObservationContext = malloc(sizeof(void *));
         
+        [self configurePPAplicationWorkspace];
         [self configureQueue];
         [self loadDataSource];
         [self bind];
@@ -41,6 +43,7 @@ typedef NSDiffableDataSourceSnapshot<AppLauncherSectionModel *, AppLauncherItemM
     free(self.runningApplicationsObservationContext);
     
     [_dataSource release];
+    [_ppApplicationWorkspace release];
     dispatch_release(_queue);
     
     [super dealloc];
@@ -54,8 +57,14 @@ typedef NSDiffableDataSourceSnapshot<AppLauncherSectionModel *, AppLauncherItemM
     }
 }
 
+- (void)configurePPAplicationWorkspace {
+    PPApplicationWorkspace *ppApplicationWorkspace = [PPApplicationWorkspace new];
+    self.ppApplicationWorkspace = ppApplicationWorkspace;
+    [ppApplicationWorkspace release];
+}
+
 - (void)configureQueue {
-    dispatch_queue_t queue = dispatch_queue_create(APP_LAUNCHER_VIEW_MODEL_SERIAL_QUEIE_LABEL, DISPATCH_QUEUE_SERIAL);
+    dispatch_queue_t queue = dispatch_queue_create(APP_LAUNCHER_VIEW_MODEL_SERIAL_QUEUE_LABEL, DISPATCH_QUEUE_SERIAL);
     self.queue = queue;
     dispatch_release(queue);
 }
@@ -66,6 +75,7 @@ typedef NSDiffableDataSourceSnapshot<AppLauncherSectionModel *, AppLauncherItemM
 
 - (void)loadDataSource {
     AppLauncherDataSource *dataSource = self.dataSource;
+    PPApplicationWorkspace *ppApplicationWorkspace = self.ppApplicationWorkspace;
     
     dispatch_async(self.queue, ^{
         AppLauncherDataSourceSnapshot *snapshot = [AppLauncherDataSourceSnapshot new];
@@ -73,7 +83,7 @@ typedef NSDiffableDataSourceSnapshot<AppLauncherSectionModel *, AppLauncherItemM
         AppLauncherSectionModel *sectionModel = [[AppLauncherSectionModel alloc] initWithType:AppLauncherSectionModelAppsType];
         [snapshot appendSectionsWithIdentifiers:@[sectionModel]];
         
-        NSArray<LSApplicationProxy *> *allAllowedApplications = PPAplicationWorkspace.sharedInstance.allAllowedApplications;
+        NSArray<LSApplicationProxy *> *allAllowedApplications = ppApplicationWorkspace.allAllowedApplications;
         NSArray<NSRunningApplication *> *runningApplications = NSWorkspace.sharedWorkspace.runningApplications;
         
         [allAllowedApplications enumerateObjectsUsingBlock:^(LSApplicationProxy * _Nonnull proxy, NSUInteger idx, BOOL * _Nonnull stop) {

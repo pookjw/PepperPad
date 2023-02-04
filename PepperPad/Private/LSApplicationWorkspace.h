@@ -5,7 +5,7 @@
 //  Created by Jinwoo Kim on 1/30/23.
 //
 
-#import <Foundation/Foundation.h>
+#import <CoreServices/CoreServices.h>
 #import "LSApplicationProxy.h"
 
 NS_ASSUME_NONNULL_BEGIN

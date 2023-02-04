@@ -10,9 +10,9 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface PPAplicationWorkspace : NSObject
-@property (class, readonly, nonatomic) PPAplicationWorkspace *sharedInstance;
-@property (readonly) NSArray<NSURL *> * _Nullable allowedApplicationBaseURLs;
+@interface PPApplicationWorkspace : NSObject
+//@property (class, readonly, nonatomic) PPAplicationWorkspace *sharedInstance;
+@property (readonly) NSArray<NSURL *> *allowedApplicationBaseURLs;
 @property (readonly) NSArray<LSApplicationProxy *> *allAllowedApplications;
 @end
 
