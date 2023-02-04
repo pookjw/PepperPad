@@ -56,8 +56,9 @@ typedef NSDiffableDataSourceSnapshot<AppLauncherSectionModel *, AppLauncherItemM
 
 - (NSArray<NSURL *> *)allowedApplicationBaseURLs {
     return @[
-        [NSURL fileURLWithPath:@"/System/Applications" isDirectory:YES],
-        [NSURL fileURLWithPath:@"/Applications" isDirectory:YES],
+        [NSURL fileURLWithPath:@"/System/Applications/" isDirectory:YES],
+        [NSURL fileURLWithPath:@"/Applications/" isDirectory:YES],
+        [NSURL fileURLWithPath:@"/System/Volumes/Preboot/Cryptexes/App/System/Applications/" isDirectory:YES],
         [NSFileManager.defaultManager.homeDirectoryForCurrentUser URLByAppendingPathComponent:@"Applications" isDirectory:YES]
     ];
 }

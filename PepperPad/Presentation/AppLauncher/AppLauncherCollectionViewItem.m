@@ -47,7 +47,8 @@
     [NSLayoutConstraint activateConstraints:@[
         [runningIndicatorBox.topAnchor constraintEqualToAnchor:self.view.topAnchor],
         [runningIndicatorBox.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor],
-        [runningIndicatorBox.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor]
+        [runningIndicatorBox.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor],
+        [runningIndicatorBox.widthAnchor constraintEqualToConstant:10.f]
     ]];
     
     self.runningIndicatorBox = runningIndicatorBox;
@@ -61,7 +62,8 @@
     [NSLayoutConstraint activateConstraints:@[
         [imageView.topAnchor constraintEqualToAnchor:self.view.topAnchor],
         [imageView.leadingAnchor constraintEqualToAnchor:self.runningIndicatorBox.trailingAnchor],
-        [imageView.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor]
+        [imageView.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor],
+        [imageView.widthAnchor constraintEqualToAnchor:self.view.heightAnchor]
     ]];
     
     self.imageView = imageView;
