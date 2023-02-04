@@ -6,10 +6,11 @@
 //
 
 #import "PPAplicationWorkspace.h"
+//#import <CoreServices/CoreServices.h>
 #import "LSApplicationWorkspace.h"
 
 @interface PPAplicationWorkspace ()
-@property (readonly) NSArray<NSURLComponents *> *allowedApplicationBaseURLComponents;
+@property (readonly) NSArray<NSURLComponents *> * _Nullable allowedApplicationBaseURLComponents;
 @end
 
 @implementation PPAplicationWorkspace
@@ -25,7 +26,11 @@
     return sharedInstance;
 }
 
-- (NSArray<NSURL *> *)allowedApplicationBaseURLs {
+- (NSArray<NSURL *> * _Nullable)allowedApplicationBaseURLs {
+    if ([NSProcessInfo.processInfo.arguments containsObject:@"--alowAppAllications"]) {
+        return nil;
+    }
+    
     return @[
         [NSURL fileURLWithPath:@"/System/Applications/" isDirectory:YES],
         [NSURL fileURLWithPath:@"/Applications/" isDirectory:YES],
@@ -36,7 +41,11 @@
 
 - (NSArray<LSApplicationProxy *> *)allAllowedApplications {
     NSArray<LSApplicationProxy *> *allApplications = [[LSApplicationWorkspace defaultWorkspace] allApplications];
-    NSArray<NSURLComponents *> *allowedApplicationBaseURLComponents = self.allowedApplicationBaseURLComponents;
+    NSArray<NSURLComponents *> * _Nullable allowedApplicationBaseURLComponents = self.allowedApplicationBaseURLComponents;
+    
+    if (allowedApplicationBaseURLComponents == nil) {
+        return allApplications;
+    }
     
     NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(LSApplicationProxy * _Nullable evaluatedObject, NSDictionary<NSString *,id> * _Nullable bindings) {
         if (evaluatedObject == nil) return NO;
@@ -63,7 +72,10 @@
     return allAllowedApplications;
 }
 
-- (NSArray<NSURLComponents *> *)allowedApplicationBaseURLComponents {
+- (NSArray<NSURLComponents *> * _Nullable)allowedApplicationBaseURLComponents {
+    NSArray<NSURL *> * _Nullable allowedApplicationBaseURLs = self.allowedApplicationBaseURLs;
+    if (allowedApplicationBaseURLs == nil) return nil;
+    
     NSMutableArray<NSURLComponents *> *results = [NSMutableArray<NSURLComponents *> new];
     
     [self.allowedApplicationBaseURLs enumerateObjectsUsingBlock:^(NSURL * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
