@@ -7,6 +7,7 @@
 
 #import "AppDelegate.h"
 #import "MainWindow.h"
+#import "NSObject+Foundation_IvarDescription.h"
 
 @interface AppDelegate ()
 @end
@@ -17,6 +18,9 @@
     MainWindow *mainWindow = [MainWindow new];
     [mainWindow makeKeyAndOrderFront:self];
     [mainWindow release];
+    
+    // swizzle +[LSApplicationWorkspaceObserver actuallyOverridesDMFObserverMethod]
+    NSLog(@"%@", [NSObject _fd__protocolDescriptionForProtocol:NSProtocolFromString(@"LSApplicationWorkspaceObserverProtocol")]);
 }
 
 
