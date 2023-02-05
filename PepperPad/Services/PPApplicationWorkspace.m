@@ -6,20 +6,12 @@
 //
 
 #import "PPApplicationWorkspace.h"
-#import <CoreServices/CoreServices.h>
 #import "LSApplicationWorkspace.h"
-
-#define PP_APPLICATION_WORKSPACE_SERIAL_QUEUE_LABEL "com.pookjw.PepperPad.AppLauncherViewModel"
-
-void fsEventStreamCallback(ConstFSEventStreamRef streamRef, void *clientCallBackInfo, size_t numEvents, void *eventPaths, const FSEventStreamEventFlags eventFlags[], const FSEventStreamEventId eventIds[]) {
-    NSLog(@"Test");
-};
 
 @interface PPApplicationWorkspace ()
 @property (readonly) NSArray<NSURLComponents *> *allowedApplicationBaseURLComponents;
-@property (retain) dispatch_queue_t streamQueue;
-@property (assign) FSEventStreamRef streamRef;
-@property (assign) void *clientCallBackInfo;
+@property (retain) NSOperationQueue *metadataQueryQueue;
+@property (retain) NSMetadataQuery *metadataQuery;
 @end
 
 @implementation PPApplicationWorkspace
@@ -38,18 +30,21 @@ void fsEventStreamCallback(ConstFSEventStreamRef streamRef, void *clientCallBack
 
 - (instancetype)init {
     if (self = [super init]) {
-        [self configureQueue];
-        [self configureStream];
+        [self configureMetadataQueryQueue];
+        [self configureMetadataQuery];
     }
     
     return self;
 }
 
 - (void)dealloc {
-    FSEventStreamStop(_streamRef);
-    FSEventStreamRelease(_streamRef);
-    free(_clientCallBackInfo);
-    dispatch_release(_streamQueue);
+    [_metadataQuery stopQuery];
+    [NSNotificationCenter.defaultCenter removeObserver:self];
+    [_metadataQuery release];
+    
+    [_metadataQueryQueue cancelAllOperations];
+    [_metadataQueryQueue release];
+    
     [super dealloc];
 }
 
@@ -63,14 +58,25 @@ void fsEventStreamCallback(ConstFSEventStreamRef streamRef, void *clientCallBack
     ];
 }
 
-- (NSArray<LSApplicationProxy *> *)allAllowedApplications {
+- (NSArray<LSApplicationProxy *> * _Nullable)md_allAllowedApplications {
+    NSArray<NSMetadataItem *> * _Nullable results = [self.metadataQuery results];
+    if (results == nil) return nil;
+    return @[];
+}
+
+- (NSArray<LSApplicationProxy *> *)ls_allAllowedApplications {
     NSArray<LSApplicationProxy *> *allApplications = [[LSApplicationWorkspace defaultWorkspace] allApplications];
     NSArray<NSURLComponents *> *allowedApplicationBaseURLComponents = self.allowedApplicationBaseURLComponents;
     
     NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(LSApplicationProxy * _Nullable evaluatedObject, NSDictionary<NSString *,id> * _Nullable bindings) {
-        if (evaluatedObject == nil) return NO;
+        if (!evaluatedObject.isInstalled) {
+            return NO;
+        }
         
-        NSURLComponents *bundleURLComponents = [[NSURLComponents alloc] initWithURL:evaluatedObject.bundleURL resolvingAgainstBaseURL:NO];
+        NSURL * _Nullable bundleURL = evaluatedObject.bundleURL;
+        if (bundleURL == nil) return NO;
+        
+        NSURLComponents *bundleURLComponents = [[NSURLComponents alloc] initWithURL:bundleURL resolvingAgainstBaseURL:NO];
         NSString *bundleURLPath = bundleURLComponents.path;
         [bundleURLComponents release];
         
@@ -92,35 +98,6 @@ void fsEventStreamCallback(ConstFSEventStreamRef streamRef, void *clientCallBack
     return allAllowedApplications;
 }
 
-- (void)configureQueue {
-    dispatch_queue_t streamQueue = dispatch_queue_create(PP_APPLICATION_WORKSPACE_SERIAL_QUEUE_LABEL, DISPATCH_QUEUE_SERIAL);
-    self.streamQueue = streamQueue;
-    dispatch_release(streamQueue);
-}
-
-- (void)configureStream {
-    // https://developer.apple.com/library/archive/documentation/Darwin/Conceptual/FSEvents_ProgGuide/UsingtheFSEventsFramework/UsingtheFSEventsFramework.html#//apple_ref/doc/uid/TP40005289-CH4-SW4
-
-    NSArray<NSURL *> *allowedApplicationBaseURLs = self.allowedApplicationBaseURLs;
-    NSUInteger count = allowedApplicationBaseURLs.count;
-    CFMutableArrayRef pathsToWatch = CFArrayCreateMutable(NULL, count, NULL);
-    
-    [self.allowedApplicationBaseURLs enumerateObjectsUsingBlock:^(NSURL * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        CFArrayAppendValue(pathsToWatch, (const void *)((CFStringRef)obj.path));
-    }];
-    
-    void *clientCallBackInfo = malloc(sizeof(void *));
-    CFAbsoluteTime latency = 3.0;
-    
-    FSEventStreamRef streamRef = FSEventStreamCreate(NULL, &fsEventStreamCallback, clientCallBackInfo, pathsToWatch, kFSEventStreamEventIdSinceNow, latency, kFSEventStreamCreateFlagNone);
-    
-    CFRelease(pathsToWatch);
-    FSEventStreamSetDispatchQueue(streamRef, self.streamQueue);
-    
-    self.streamRef = streamRef;
-    self.clientCallBackInfo = clientCallBackInfo;
-}
-
 - (NSArray<NSURLComponents *> *)allowedApplicationBaseURLComponents {
     NSMutableArray<NSURLComponents *> *results = [NSMutableArray<NSURLComponents *> new];
     
@@ -133,6 +110,106 @@ void fsEventStreamCallback(ConstFSEventStreamRef streamRef, void *clientCallBack
     NSArray<NSURLComponents *> *copy = [results copy];
     [results release];
     return [copy autorelease];
+}
+
+- (void)configureMetadataQueryQueue {
+    NSOperationQueue *metadataQueryQueue = [NSOperationQueue new];
+    metadataQueryQueue.qualityOfService = NSQualityOfServiceUtility;
+//    metadataQueryQueue.maxConcurrentOperationCount = 1;
+    self.metadataQueryQueue = metadataQueryQueue;
+    [metadataQueryQueue release];
+}
+
+- (void)configureMetadataQuery {
+    NSMetadataQuery *metadataQuery = [NSMetadataQuery new];
+    
+    // TODO: TEST
+//    metadataQuery.predicate = [NSPredicate predicateWithFormat:@"kMDItemKind == 'Application'"];
+    metadataQuery.predicate = [NSPredicate predicateWithFormat:@"kMDItemFSName CONTAINS[cd] 'Magnet.app'"];
+    metadataQuery.searchScopes = @[NSMetadataQueryIndexedLocalComputerScope];
+    metadataQuery.operationQueue = self.metadataQueryQueue;
+    
+    [NSNotificationCenter.defaultCenter addObserver:self
+                                           selector:@selector(receivedDidUpdateQueryWithNotification:)
+                                               name:NSMetadataQueryDidUpdateNotification
+                                             object:metadataQuery];
+    
+    [metadataQuery startQuery];
+    
+    self.metadataQuery = metadataQuery;
+    [metadataQuery release];
+}
+
+- (void)receivedDidUpdateQueryWithNotification:(NSNotification *)notification {
+    NSDictionary * _Nullable userInfo = notification.userInfo;
+    if (userInfo == nil) return;
+    
+    NSArray<NSMetadataItem *> * _Nullable addedItems = userInfo[NSMetadataQueryUpdateAddedItemsKey];
+    NSArray<NSMetadataItem *> * _Nullable changedItems = userInfo[NSMetadataQueryUpdateChangedItemsKey];
+    NSArray<NSMetadataItem *> * _Nullable removedItems = userInfo[NSMetadataQueryUpdateRemovedItemsKey];
+    
+    if ((addedItems == nil) && (changedItems == nil) && (removedItems == nil)) return;
+    
+    NSMutableDictionary<NSString *, NSSet<NSURL * > *> *willSendUserInfo = [NSMutableDictionary<NSString *, NSSet<NSURL * > *> new];
+    NSArray<NSString *> *itemsKeys = @[
+        PPApplicationWorkspaceDidUpdateApplicationsMetadataAddedItemsKey,
+        PPApplicationWorkspaceDidUpdateApplicationsMetadataChangedItemsKey,
+        PPApplicationWorkspaceDidUpdateApplicationsMetadataRemovedItemsKey
+    ];
+    
+    [itemsKeys enumerateObjectsUsingBlock:^(NSString * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        NSArray<NSMetadataItem *> * _Nullable items;
+        
+        if ([obj isEqualToString:PPApplicationWorkspaceDidUpdateApplicationsMetadataAddedItemsKey]) {
+            items = addedItems;
+        } else if ([obj isEqualToString:PPApplicationWorkspaceDidUpdateApplicationsMetadataChangedItemsKey]) {
+            items = changedItems;
+        } else if ([obj isEqualToString:PPApplicationWorkspaceDidUpdateApplicationsMetadataRemovedItemsKey]) {
+            // TODO: TEST : All values are NULL? How to solve this?
+            [removedItems enumerateObjectsUsingBlock:^(NSMetadataItem * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                if (![obj isKindOfClass:NSMetadataItem.class]) return;
+                if (![obj respondsToSelector:@selector(attributes)]) return;
+                [obj.attributes enumerateObjectsUsingBlock:^(NSString * _Nonnull attribute, NSUInteger idx, BOOL * _Nonnull stop) {
+                    if (![obj respondsToSelector:@selector(valueForAttribute:)]) return;
+                    NSLog(@"%@: %@", attribute, [obj valueForAttribute:attribute]);
+                }];
+            }];
+            
+            items = removedItems;
+        } else {
+            return;
+        }
+        
+        if (items == nil) return;
+        
+        if (items.count) {
+            NSMutableSet<NSURL *> *urls = [NSMutableSet<NSURL *> new];
+            
+            [items enumerateObjectsUsingBlock:^(NSMetadataItem * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                if (![obj isKindOfClass:NSMetadataItem.class]) return;
+                
+                NSString * _Nullable path = [obj valueForAttribute:NSMetadataItemPathKey];
+                if (path == nil) return;
+                NSURL *url = [[NSURL alloc] initFileURLWithPath:path isDirectory:YES];
+                [urls addObject:url];
+                [url release];
+            }];
+            
+            NSSet<NSURL *> *copy = [urls copy];
+            [urls release];
+            willSendUserInfo[obj] = copy;
+            [copy release];
+        }
+    }];
+    
+    NSDictionary<NSString *, NSSet<NSURL * > *> *copy = [willSendUserInfo copy];
+    [willSendUserInfo release];
+    
+    [NSNotificationCenter.defaultCenter postNotificationName:NSNotificationNamePPApplicationWorkspaceDidUpdateApplicationsMetadata
+                                                      object:self
+                                                    userInfo:copy];
+    
+    [copy release];
 }
 
 @end

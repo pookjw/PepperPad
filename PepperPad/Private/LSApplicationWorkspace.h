@@ -12,7 +12,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface LSApplicationWorkspace : NSObject
 + (LSApplicationWorkspace *)defaultWorkspace;
-+ (id)_remoteObserver;
++ (dispatch_queue_t)callbackQueue;
++ (dispatch_queue_t)_defaultAppQueue;
 - (NSArray<LSApplicationProxy *> *)allApplications;
 - (_Bool)openApplicationWithBundleID:(NSString *)arg1;
 - (_Bool)openURL:(NSURL *)arg1 withOptions:(id _Nullable)arg2 error:(NSError * __autoreleasing * _Nullable)arg3;

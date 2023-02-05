@@ -122,7 +122,7 @@
 }
 
 - (void)receivedErrorWithNotification:(NSNotification *)notification {
-    NSError * _Nullable error = notification.userInfo[AppLauncherViewModelErrorOccuredErrorKey];
+    NSError * _Nullable error = notification.userInfo[AppLauncherViewModelErrorOccuredErrorItemKey];
     
     if (error) {
         dispatch_async(dispatch_get_main_queue(), ^{

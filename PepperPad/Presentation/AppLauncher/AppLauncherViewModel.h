@@ -14,7 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 typedef NSCollectionViewDiffableDataSource<AppLauncherSectionModel *, AppLauncherItemModel *> AppLauncherDataSource;
 
 static NSNotificationName const NSNotificationNameAppLauncherViewModelErrorOccured = @"NSNotificationNameAppLauncherViewModelErrorOccured";
-static NSString * const AppLauncherViewModelErrorOccuredErrorKey = @"AppLauncherViewModelErrorOccuredErrorKey";
+static NSString * const AppLauncherViewModelErrorOccuredErrorItemKey = @"AppLauncherViewModelErrorOccuredErrorItemKey";
 
 @interface AppLauncherViewModel : NSObject
 @property (readonly, retain) AppLauncherDataSource *dataSource;

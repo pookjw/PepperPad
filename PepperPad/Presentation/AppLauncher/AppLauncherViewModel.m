@@ -71,6 +71,11 @@ typedef NSDiffableDataSourceSnapshot<AppLauncherSectionModel *, AppLauncherItemM
 
 - (void)bind {
     [NSWorkspace.sharedWorkspace addObserver:self forKeyPath:@"runningApplications" options:NSKeyValueObservingOptionNew context:self.runningApplicationsObservationContext];
+    
+    [NSNotificationCenter.defaultCenter addObserver:self
+                                           selector:@selector(receivedDidUpdateApplicationsWithNotification:)
+                                               name:NSNotificationNamePPApplicationWorkspaceDidUpdateApplicationsMetadata
+                                             object:self.ppApplicationWorkspace];
 }
 
 - (void)loadDataSource {
@@ -83,7 +88,7 @@ typedef NSDiffableDataSourceSnapshot<AppLauncherSectionModel *, AppLauncherItemM
         AppLauncherSectionModel *sectionModel = [[AppLauncherSectionModel alloc] initWithType:AppLauncherSectionModelAppsType];
         [snapshot appendSectionsWithIdentifiers:@[sectionModel]];
         
-        NSArray<LSApplicationProxy *> *allAllowedApplications = ppApplicationWorkspace.allAllowedApplications;
+        NSArray<LSApplicationProxy *> *allAllowedApplications = ppApplicationWorkspace.ls_allAllowedApplications;
         NSArray<NSRunningApplication *> *runningApplications = NSWorkspace.sharedWorkspace.runningApplications;
         
         [allAllowedApplications enumerateObjectsUsingBlock:^(LSApplicationProxy * _Nonnull proxy, NSUInteger idx, BOOL * _Nonnull stop) {
@@ -98,7 +103,7 @@ typedef NSDiffableDataSourceSnapshot<AppLauncherSectionModel *, AppLauncherItemM
                 
                 if (error) {
                     [iconData release];
-//                    NSLog(@"%@", error);
+                    NSLog(@"%@", error);
                 } else {
                     NSImage *_iconImage = [[NSImage alloc] initWithData:iconData];
                     [iconData release];
@@ -187,7 +192,11 @@ typedef NSDiffableDataSourceSnapshot<AppLauncherSectionModel *, AppLauncherItemM
 - (void)postNotificationWithError:(NSError *)error {
     [NSNotificationCenter.defaultCenter postNotificationName:NSNotificationNameAppLauncherViewModelErrorOccured
                                                       object:self
-                                                    userInfo:@{AppLauncherViewModelErrorOccuredErrorKey: error}];
+                                                    userInfo:@{AppLauncherViewModelErrorOccuredErrorItemKey: error}];
+}
+
+- (void)receivedDidUpdateApplicationsWithNotification:(NSNotification *)notification {
+    [self loadDataSource];
 }
 
 @end

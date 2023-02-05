@@ -10,10 +10,17 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+static NSNotificationName const NSNotificationNamePPApplicationWorkspaceDidUpdateApplicationsMetadata = @"NSNotificationNamePPApplicationWorkspaceDidUpdateApplicationsMetadata";
+
+static NSString * const PPApplicationWorkspaceDidUpdateApplicationsMetadataAddedItemsKey = @"PPApplicationWorkspaceDidUpdateApplicationsMetadataAddedItemsKey";
+static NSString * const PPApplicationWorkspaceDidUpdateApplicationsMetadataChangedItemsKey = @"PPApplicationWorkspaceDidUpdateApplicationsMetadataChangedItemsKey";
+static NSString * const PPApplicationWorkspaceDidUpdateApplicationsMetadataRemovedItemsKey = @"PPApplicationWorkspaceDidUpdateApplicationsMetadataRemovedItemsKey";
+
 @interface PPApplicationWorkspace : NSObject
-//@property (class, readonly, nonatomic) PPAplicationWorkspace *sharedInstance;
 @property (readonly) NSArray<NSURL *> *allowedApplicationBaseURLs;
 @property (readonly) NSArray<LSApplicationProxy *> *allAllowedApplications;
+@property (readonly) NSArray<LSApplicationProxy *> *ls_allAllowedApplications;
+@property (readonly) NSArray<LSApplicationProxy *> * _Nullable md_allAllowedApplications;
 @end
 
 NS_ASSUME_NONNULL_END
