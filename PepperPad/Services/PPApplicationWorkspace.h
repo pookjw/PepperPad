@@ -16,9 +16,7 @@ static NSString * const PPApplicationWorkspaceDidUpdateApplicationsMetadataAdded
 static NSString * const PPApplicationWorkspaceDidUpdateApplicationsMetadataChangedItemsKey = @"PPApplicationWorkspaceDidUpdateApplicationsMetadataChangedItemsKey";
 
 @interface PPApplicationWorkspace : NSObject
-@property (readonly) NSArray<NSURL *> *allowedApplicationBaseURLs;
 @property (readonly) NSArray<LSApplicationProxy *> *allAllowedApplications;
-@property (readonly) NSArray<LSApplicationProxy *> *ls_allAllowedApplications;
 @property (readonly) NSArray<LSApplicationProxy *> * _Nullable md_allAllowedApplications;
 @end
 

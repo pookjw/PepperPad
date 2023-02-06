@@ -10,7 +10,8 @@
 #import <CoreServices/CoreServices.h>
 
 @interface PPApplicationWorkspace ()
-@property (readonly) NSArray<NSURLComponents *> *allowedApplicationBaseURLComponents;
+@property (readonly) NSArray<NSURL *> * _Nullable allowedApplicationBaseURLs;
+@property (readonly) NSArray<NSURLComponents *> * _Nullable allowedApplicationBaseURLComponents;
 @property (retain) NSOperationQueue *metadataQueryQueue;
 @property (retain) NSMetadataQuery *metadataQuery;
 @end
@@ -49,7 +50,11 @@
     [super dealloc];
 }
 
-- (NSArray<NSURL *> *)allowedApplicationBaseURLs {
+- (NSArray<NSURL *> * _Nullable)allowedApplicationBaseURLs {
+    if ([NSProcessInfo.processInfo.arguments containsObject:@"--allowsAllApplications"]) {
+        return nil;
+    }
+    
     return @[
         [NSURL fileURLWithPath:@"/System/Applications/" isDirectory:YES],
         [NSURL fileURLWithPath:@"/Applications/" isDirectory:YES],
@@ -59,15 +64,11 @@
     ];
 }
 
-- (NSArray<LSApplicationProxy *> * _Nullable)md_allAllowedApplications {
-    NSArray<NSMetadataItem *> * _Nullable results = [self.metadataQuery results];
-    if (results == nil) return nil;
-    return @[];
-}
-
-- (NSArray<LSApplicationProxy *> *)ls_allAllowedApplications {
+- (NSArray<LSApplicationProxy *> *)allAllowedApplications {
     NSArray<LSApplicationProxy *> *allApplications = [[LSApplicationWorkspace defaultWorkspace] allApplications];
-    NSArray<NSURLComponents *> *allowedApplicationBaseURLComponents = self.allowedApplicationBaseURLComponents;
+    NSArray<NSURLComponents *> * _Nullable allowedApplicationBaseURLComponents = self.allowedApplicationBaseURLComponents;
+    
+    if (allowedApplicationBaseURLComponents == nil) return allApplications;
     
     NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(LSApplicationProxy * _Nullable evaluatedObject, NSDictionary<NSString *,id> * _Nullable bindings) {
         if (!evaluatedObject.isInstalled) {
@@ -99,10 +100,13 @@
     return allAllowedApplications;
 }
 
-- (NSArray<NSURLComponents *> *)allowedApplicationBaseURLComponents {
+- (NSArray<NSURLComponents *> * _Nullable)allowedApplicationBaseURLComponents {
+    NSArray<NSURL *> * _Nullable allowedApplicationBaseURLs = self.allowedApplicationBaseURLs;
+    if (allowedApplicationBaseURLs == nil) return nil;
+    
     NSMutableArray<NSURLComponents *> *results = [NSMutableArray<NSURLComponents *> new];
     
-    [self.allowedApplicationBaseURLs enumerateObjectsUsingBlock:^(NSURL * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+    [allowedApplicationBaseURLs enumerateObjectsUsingBlock:^(NSURL * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         NSURLComponents *urlComponents = [[NSURLComponents alloc] initWithURL:obj resolvingAgainstBaseURL:NO];
         [results addObject:urlComponents];
         [urlComponents release];

@@ -35,7 +35,13 @@
 
 - (void)configureWithTitle:(NSString *)title image:(NSImage *)image isRunning:(BOOL)isRunning {
     self.runningIndicatorBox.fillColor = isRunning ? NSColor.systemPurpleColor : NSColor.clearColor;
-    self.textField.stringValue = title;
+    
+    if (title) {
+        self.textField.stringValue = title;
+    } else {
+        self.textField.stringValue = @"";
+    }
+    
     self.imageView.image = image;
 }
 
