@@ -40,7 +40,7 @@ typedef NSDiffableDataSourceSnapshot<AppLauncherSectionModel *, AppLauncherItemM
 
 - (void)dealloc {
     [NSWorkspace.sharedWorkspace removeObserver:self forKeyPath:@"runningApplications" context:_runningApplicationsObservationContext];
-    free(self.runningApplicationsObservationContext);
+    free(_runningApplicationsObservationContext);
     
     [_dataSource release];
     [_ppApplicationWorkspace release];
