@@ -145,12 +145,11 @@ typedef NSDiffableDataSourceSnapshot<AppLauncherSectionModel *, AppLauncherItemM
     
     dispatch_async(self.queue, ^{
         AppLauncherDataSourceSnapshot *snapshot = [dataSource.snapshot copy];
-        NSArray<NSRunningApplication *> *runningApplications = NSWorkspace.sharedWorkspace.runningApplications;
         
         [snapshot.itemIdentifiers enumerateObjectsUsingBlock:^(AppLauncherItemModel * _Nonnull itemModel, NSUInteger idx, BOOL * _Nonnull stop) {
+            NSArray<NSRunningApplication *> *runningApplications = [NSRunningApplication runningApplicationsWithBundleIdentifier:itemModel.applicationProxy.bundleIdentifier];
             __block BOOL isRunning = NO;
             
-            // TODO: No Need to Loop: https://developer.apple.com/documentation/appkit/nsrunningapplication/1530798-runningapplicationswithbundleide?language=objc
             [runningApplications enumerateObjectsUsingBlock:^(NSRunningApplication * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
                 if ([itemModel.applicationProxy.bundleURL isEqual:obj.bundleURL]) {
                     isRunning = YES;
