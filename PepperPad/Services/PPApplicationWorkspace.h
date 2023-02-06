@@ -14,7 +14,6 @@ static NSNotificationName const NSNotificationNamePPApplicationWorkspaceDidUpdat
 
 static NSString * const PPApplicationWorkspaceDidUpdateApplicationsMetadataAddedItemsKey = @"PPApplicationWorkspaceDidUpdateApplicationsMetadataAddedItemsKey";
 static NSString * const PPApplicationWorkspaceDidUpdateApplicationsMetadataChangedItemsKey = @"PPApplicationWorkspaceDidUpdateApplicationsMetadataChangedItemsKey";
-static NSString * const PPApplicationWorkspaceDidUpdateApplicationsMetadataRemovedItemsKey = @"PPApplicationWorkspaceDidUpdateApplicationsMetadataRemovedItemsKey";
 
 @interface PPApplicationWorkspace : NSObject
 @property (readonly) NSArray<NSURL *> *allowedApplicationBaseURLs;

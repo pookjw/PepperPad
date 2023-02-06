@@ -7,6 +7,7 @@
 
 #import "PPApplicationWorkspace.h"
 #import "LSApplicationWorkspace.h"
+#import <CoreServices/CoreServices.h>
 
 @interface PPApplicationWorkspace ()
 @property (readonly) NSArray<NSURLComponents *> *allowedApplicationBaseURLComponents;
@@ -124,8 +125,8 @@
     NSMetadataQuery *metadataQuery = [NSMetadataQuery new];
     
     // TODO: TEST
+    metadataQuery.predicate = [NSPredicate predicateWithFormat:@"kMDItemContentTypeTree contains 'com.apple.application'"];
 //    metadataQuery.predicate = [NSPredicate predicateWithFormat:@"kMDItemKind == 'Application'"];
-    metadataQuery.predicate = [NSPredicate predicateWithFormat:@"kMDItemFSName CONTAINS[cd] 'Magnet.app'"];
     metadataQuery.searchScopes = @[NSMetadataQueryIndexedLocalComputerScope];
     metadataQuery.operationQueue = self.metadataQueryQueue;
     
@@ -146,15 +147,13 @@
     
     NSArray<NSMetadataItem *> * _Nullable addedItems = userInfo[NSMetadataQueryUpdateAddedItemsKey];
     NSArray<NSMetadataItem *> * _Nullable changedItems = userInfo[NSMetadataQueryUpdateChangedItemsKey];
-    NSArray<NSMetadataItem *> * _Nullable removedItems = userInfo[NSMetadataQueryUpdateRemovedItemsKey];
     
-    if ((addedItems == nil) && (changedItems == nil) && (removedItems == nil)) return;
+    if ((addedItems == nil) && (changedItems == nil)) return;
     
     NSMutableDictionary<NSString *, NSSet<NSURL * > *> *willSendUserInfo = [NSMutableDictionary<NSString *, NSSet<NSURL * > *> new];
     NSArray<NSString *> *itemsKeys = @[
         PPApplicationWorkspaceDidUpdateApplicationsMetadataAddedItemsKey,
-        PPApplicationWorkspaceDidUpdateApplicationsMetadataChangedItemsKey,
-        PPApplicationWorkspaceDidUpdateApplicationsMetadataRemovedItemsKey
+        PPApplicationWorkspaceDidUpdateApplicationsMetadataChangedItemsKey
     ];
     
     [itemsKeys enumerateObjectsUsingBlock:^(NSString * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
@@ -164,23 +163,20 @@
             items = addedItems;
         } else if ([obj isEqualToString:PPApplicationWorkspaceDidUpdateApplicationsMetadataChangedItemsKey]) {
             items = changedItems;
-        } else if ([obj isEqualToString:PPApplicationWorkspaceDidUpdateApplicationsMetadataRemovedItemsKey]) {
-            // TODO: TEST : All values are NULL? How to solve this?
-            [removedItems enumerateObjectsUsingBlock:^(NSMetadataItem * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-                if (![obj isKindOfClass:NSMetadataItem.class]) return;
-                if (![obj respondsToSelector:@selector(attributes)]) return;
-                [obj.attributes enumerateObjectsUsingBlock:^(NSString * _Nonnull attribute, NSUInteger idx, BOOL * _Nonnull stop) {
-                    if (![obj respondsToSelector:@selector(valueForAttribute:)]) return;
-                    NSLog(@"%@: %@", attribute, [obj valueForAttribute:attribute]);
-                }];
-            }];
-            
-            items = removedItems;
         } else {
             return;
         }
         
         if (items == nil) return;
+        
+//        [items enumerateObjectsUsingBlock:^(NSMetadataItem * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+//            if (![obj isKindOfClass:NSMetadataItem.class]) return;
+//            if (![obj respondsToSelector:@selector(attributes)]) return;
+//            [obj.attributes enumerateObjectsUsingBlock:^(NSString * _Nonnull attribute, NSUInteger idx, BOOL * _Nonnull stop) {
+//                if (![obj respondsToSelector:@selector(valueForAttribute:)]) return;
+//                NSLog(@"%@: %@", attribute, [obj valueForAttribute:attribute]);
+//            }];
+//        }];
         
         if (items.count) {
             NSMutableSet<NSURL *> *urls = [NSMutableSet<NSURL *> new];
