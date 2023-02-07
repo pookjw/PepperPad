@@ -7,7 +7,6 @@
 
 #import "PPApplicationWorkspace.h"
 #import "LSApplicationWorkspace.h"
-#import <CoreServices/CoreServices.h>
 
 @interface PPApplicationWorkspace ()
 @property (readonly) NSArray<NSURL *> * _Nullable allowedApplicationBaseURLs;
@@ -24,7 +23,6 @@
     
     dispatch_once(&onceToken, ^{
         sharedInstance = [PPApplicationWorkspace new];
-        
     });
     
     return sharedInstance;

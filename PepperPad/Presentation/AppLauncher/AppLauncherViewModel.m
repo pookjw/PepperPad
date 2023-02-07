@@ -97,7 +97,7 @@ typedef NSDiffableDataSourceSnapshot<AppLauncherSectionModel *, AppLauncherItemM
             NSImage * __autoreleasing _Nullable iconImage = nil;
             
             if (resourceRelativePath) {
-                NSURL *resourceAbsoluteURL = [proxy.bundleURL URLByAppendingPathComponent:resourceRelativePath isDirectory:NO];
+                NSURL *resourceAbsoluteURL = [iconResource.resourceURL URLByAppendingPathComponent:resourceRelativePath isDirectory:NO];
                 NSError * __autoreleasing _Nullable error = nil;
                 NSData *iconData = [[NSData alloc] initWithContentsOfURL:resourceAbsoluteURL options:0 error:&error];
                 
