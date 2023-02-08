@@ -9,13 +9,10 @@
 
 @implementation AppLauncherItemModel
 
-- (instancetype)initWithApplicationProxy:(LSApplicationProxy *)applicationProxy iconImage:(NSImage *)iconImage isRunning:(BOOL)isRunning {
+- (instancetype)initWithApplicationProxy:(LSApplicationProxy *)applicationProxy isRunning:(BOOL)isRunning {
     if (self = [self init]) {
         [self->_applicationProxy release];
         self->_applicationProxy = [applicationProxy retain];
-        
-        [self->_iconImage release];
-        self->_iconImage = [iconImage retain];
         
         self.isRunning = isRunning;
     }
@@ -25,7 +22,6 @@
 
 - (void)dealloc {
     [_applicationProxy release];
-    [_iconImage release];
     [super dealloc];
 }
 

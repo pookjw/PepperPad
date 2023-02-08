@@ -6,13 +6,14 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "LSApplicationProxy.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 static NSUserInterfaceItemIdentifier const NSUserInterfaceItemIdentifierAppLauncherCollectionViewItem = @"NSUserInterfaceItemIdentifierAppLauncherCollectionViewItem";
 
 @interface AppLauncherCollectionViewItem : NSCollectionViewItem
-- (void)configureWithTitle:(NSString *)title image:(NSImage *)image isRunning:(BOOL)isRunning;
+- (void)configureWithApplicationProxy:(LSApplicationProxy *)applicationProxy isRunning:(BOOL)isRunning;
 @end
 
 NS_ASSUME_NONNULL_END

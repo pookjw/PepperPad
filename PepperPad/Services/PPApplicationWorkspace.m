@@ -7,6 +7,7 @@
 
 #import "PPApplicationWorkspace.h"
 #import "LSApplicationWorkspace.h"
+#import <Cocoa/Cocoa.h>
 
 @interface PPApplicationWorkspace ()
 @property (readonly) NSArray<NSURL *> * _Nullable allowedApplicationBaseURLs;
@@ -69,12 +70,20 @@
     if (allowedApplicationBaseURLComponents == nil) return allApplications;
     
     NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(LSApplicationProxy * _Nullable evaluatedObject, NSDictionary<NSString *,id> * _Nullable bindings) {
-        if (!evaluatedObject.isInstalled) {
+        if (evaluatedObject.isInstalled) {
             return NO;
         }
         
         NSURL * _Nullable bundleURL = evaluatedObject.bundleURL;
         if (bundleURL == nil) return NO;
+        
+//        NSError * __autoreleasing _Nullable error = nil;
+//        if (![[LSApplicationWorkspace defaultWorkspace] isApplicationAvailableToOpenURL:bundleURL error:&error]) {
+//            return NO;
+//        }
+//        if (error) {
+//            return NO;
+//        }
         
         NSURLComponents *bundleURLComponents = [[NSURLComponents alloc] initWithURL:bundleURL resolvingAgainstBaseURL:NO];
         NSString *bundleURLPath = bundleURLComponents.path;
@@ -144,70 +153,9 @@
 }
 
 - (void)receivedDidUpdateQueryWithNotification:(NSNotification *)notification {
-    NSDictionary * _Nullable userInfo = notification.userInfo;
-    if (userInfo == nil) return;
-    
-    NSArray<NSMetadataItem *> * _Nullable addedItems = userInfo[NSMetadataQueryUpdateAddedItemsKey];
-    NSArray<NSMetadataItem *> * _Nullable changedItems = userInfo[NSMetadataQueryUpdateChangedItemsKey];
-    
-    if ((addedItems == nil) && (changedItems == nil)) return;
-    
-    NSMutableDictionary<NSString *, NSSet<NSURL * > *> *willSendUserInfo = [NSMutableDictionary<NSString *, NSSet<NSURL * > *> new];
-    NSArray<NSString *> *itemsKeys = @[
-        PPApplicationWorkspaceDidUpdateApplicationsMetadataAddedItemsKey,
-        PPApplicationWorkspaceDidUpdateApplicationsMetadataChangedItemsKey
-    ];
-    
-    [itemsKeys enumerateObjectsUsingBlock:^(NSString * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        NSArray<NSMetadataItem *> * _Nullable items;
-        
-        if ([obj isEqualToString:PPApplicationWorkspaceDidUpdateApplicationsMetadataAddedItemsKey]) {
-            items = addedItems;
-        } else if ([obj isEqualToString:PPApplicationWorkspaceDidUpdateApplicationsMetadataChangedItemsKey]) {
-            items = changedItems;
-        } else {
-            return;
-        }
-        
-        if (items == nil) return;
-        
-//        [items enumerateObjectsUsingBlock:^(NSMetadataItem * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-//            if (![obj isKindOfClass:NSMetadataItem.class]) return;
-//            if (![obj respondsToSelector:@selector(attributes)]) return;
-//            [obj.attributes enumerateObjectsUsingBlock:^(NSString * _Nonnull attribute, NSUInteger idx, BOOL * _Nonnull stop) {
-//                if (![obj respondsToSelector:@selector(valueForAttribute:)]) return;
-//                NSLog(@"%@: %@", attribute, [obj valueForAttribute:attribute]);
-//            }];
-//        }];
-        
-        if (items.count) {
-            NSMutableSet<NSURL *> *urls = [NSMutableSet<NSURL *> new];
-            
-            [items enumerateObjectsUsingBlock:^(NSMetadataItem * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-                if (![obj isKindOfClass:NSMetadataItem.class]) return;
-                
-                NSString * _Nullable path = [obj valueForAttribute:NSMetadataItemPathKey];
-                if (path == nil) return;
-                NSURL *url = [[NSURL alloc] initFileURLWithPath:path isDirectory:YES];
-                [urls addObject:url];
-                [url release];
-            }];
-            
-            NSSet<NSURL *> *copy = [urls copy];
-            [urls release];
-            willSendUserInfo[obj] = copy;
-            [copy release];
-        }
-    }];
-    
-    NSDictionary<NSString *, NSSet<NSURL * > *> *copy = [willSendUserInfo copy];
-    [willSendUserInfo release];
-    
     [NSNotificationCenter.defaultCenter postNotificationName:NSNotificationNamePPApplicationWorkspaceDidUpdateApplicationsMetadata
                                                       object:self
-                                                    userInfo:copy];
-    
-    [copy release];
+                                                    userInfo:nil];
 }
 
 @end

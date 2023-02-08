@@ -107,7 +107,7 @@
 - (AppLauncherDataSource *)createDataSource {
     AppLauncherDataSource *dataSource = [[AppLauncherDataSource alloc] initWithCollectionView:self.collectionView itemProvider:^NSCollectionViewItem * _Nullable(NSCollectionView * _Nonnull collectionView, NSIndexPath * _Nonnull indexPath, AppLauncherItemModel * _Nonnull itemModel) {
         AppLauncherCollectionViewItem *item = [collectionView makeItemWithIdentifier:NSUserInterfaceItemIdentifierAppLauncherCollectionViewItem forIndexPath:indexPath];
-        [item configureWithTitle:itemModel.applicationProxy.localizedName image:itemModel.iconImage isRunning:itemModel.isRunning];
+        [item configureWithApplicationProxy:itemModel.applicationProxy isRunning:itemModel.isRunning];
         return item;
     }];
     

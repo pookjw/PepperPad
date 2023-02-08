@@ -1,13 +1,13 @@
 //
-//  NSDiffableDataSourceSnapshot+sort.m
+//  NSDiffableDataSourceSnapshot+Sort.m
 //  PepperPad
 //
 //  Created by Jinwoo Kim on 8/23/21.
 //
 
-#import "NSDiffableDataSourceSnapshot+sort.h"
+#import "NSDiffableDataSourceSnapshot+Sort.h"
 
-@implementation NSDiffableDataSourceSnapshot (sort)
+@implementation NSDiffableDataSourceSnapshot (Sort)
 
 - (void)sortItemsWithSectionIdentifiers:(NSArray *)sectionIdentifiers usingComparator:(NSComparator NS_NOESCAPE)cmptr {
     for (id sectionIdentifier in sectionIdentifiers) {

@@ -10,6 +10,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface LSApplicationProxy : LSBundleProxy
+@property (nonatomic) _Bool userInitiatedUninstall;
 @property (readonly, nonatomic) NSString *applicationIdentifier;
 @property (readonly, nonatomic) NSDate *registeredDate;
 @property (readonly, nonatomic) NSString *minimumSystemVersion;
@@ -29,11 +30,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readonly, nonatomic, getter=isDeletable) _Bool deletable;
 @property (readonly, nonatomic) NSNumber *platform;
 @property (readonly, nonatomic) NSSet *claimedURLSchemes;
-@property (readonly, nonatomic) NSString *bundleIdentifier;
+@property (readonly, nonatomic) NSString * _Nullable bundleIdentifier;
 @property (readonly, nonatomic) NSString *bundleType;
 @property (readonly, nonatomic) NSURL *bundleURL;
-@property (readonly, nonatomic) NSString *bundleExecutable;
-@property (readonly, nonatomic) NSString *canonicalExecutablePath;
 @property (readonly, nonatomic) NSURL *containerURL;
 @property (readonly, nonatomic) NSURL *dataContainerURL;
 @property (readonly, nonatomic) NSURL *bundleContainerURL;
@@ -43,7 +42,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readonly, nonatomic) NSDictionary *entitlements;
 @property (readonly, nonatomic) NSDictionary *environmentVariables;
 @property (readonly, nonatomic) NSDictionary *groupContainerURLs;
-+ (id)applicationProxyForIdentifier:(id)arg1;
+//+ (id)applicationProxyForIdentifier:(id)arg1;
 + (id)applicationProxyForBundleURL:(id)arg1;
 @end
 

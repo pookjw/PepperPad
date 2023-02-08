@@ -1,5 +1,5 @@
 //
-//  NSDiffableDataSourceSnapshot+sort.h
+//  NSDiffableDataSourceSnapshot+Sort.h
 //  PepperPad
 //
 //  Created by Jinwoo Kim on 8/23/21.
@@ -9,7 +9,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface NSDiffableDataSourceSnapshot (sort)
+@interface NSDiffableDataSourceSnapshot (Sort)
 - (void)sortItemsWithSectionIdentifiers:(NSArray *)sectionIdentifiers usingComparator:(NSComparator NS_NOESCAPE)cmptr;
 - (void)sortSectionsUsingComparator:(NSComparator NS_NOESCAPE)cmptr;
 @end

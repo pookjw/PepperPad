@@ -8,6 +8,7 @@
 #import "AppLauncherCollectionViewItem.h"
 #import "NSTextField+ApplyLabelStyle.h"
 #import "NSBox+ApplySimpleBoxStyle.h"
+#import "LSIconResource.h"
 
 @interface AppLauncherCollectionViewItem ()
 @property (retain) NSBox *runningIndicatorBox;
@@ -33,16 +34,47 @@
     [self configureTextField];
 }
 
-- (void)configureWithTitle:(NSString *)title image:(NSImage *)image isRunning:(BOOL)isRunning {
+- (void)configureWithApplicationProxy:(LSApplicationProxy *)applicationProxy isRunning:(BOOL)isRunning {
     self.runningIndicatorBox.fillColor = isRunning ? NSColor.systemPurpleColor : NSColor.clearColor;
     
-    if (title) {
-        self.textField.stringValue = title;
+    NSString * _Nullable localizedName = applicationProxy.localizedName;
+    if (localizedName) {
+        self.textField.stringValue = localizedName;
     } else {
         self.textField.stringValue = @"";
     }
     
-    self.imageView.image = image;
+    LSIconResource *iconResource = [LSIconResource resourceForURL:applicationProxy.bundleURL];
+    NSString * _Nullable resourceRelativePath = iconResource.resourceRelativePath;
+
+    BOOL foundImage;
+    if (resourceRelativePath) {
+        NSURL *resourceAbsoluteURL = [iconResource.resourceURL URLByAppendingPathComponent:resourceRelativePath isDirectory:NO];
+        NSError * __autoreleasing _Nullable error = nil;
+        NSData * _Nullable iconData = [[NSData alloc] initWithContentsOfURL:resourceAbsoluteURL options:0 error:&error];
+
+        if ((error != nil) || (iconData == nil)) {
+            [iconData release];
+            foundImage = NO;
+        } else {
+            NSImage * _Nullable iconImage = [[NSImage alloc] initWithData:iconData];
+            
+            if (iconImage) {
+                self.imageView.image = iconImage;
+                foundImage = YES;
+            } else {
+                foundImage = NO;
+            }
+            
+            [iconImage release];
+        }
+    } else {
+        foundImage = NO;
+    }
+    
+    if (!foundImage) {
+        [NSImage imageWithSystemSymbolName:@"app.dashed" accessibilityDescription:nil];
+    }
 }
 
 - (void)configureRunningIndicatorBox {
