@@ -77,14 +77,6 @@
         NSURL * _Nullable bundleURL = evaluatedObject.bundleURL;
         if (bundleURL == nil) return NO;
         
-//        NSError * __autoreleasing _Nullable error = nil;
-//        if (![[LSApplicationWorkspace defaultWorkspace] isApplicationAvailableToOpenURL:bundleURL error:&error]) {
-//            return NO;
-//        }
-//        if (error) {
-//            return NO;
-//        }
-        
         NSURLComponents *bundleURLComponents = [[NSURLComponents alloc] initWithURL:bundleURL resolvingAgainstBaseURL:NO];
         NSString *bundleURLPath = bundleURLComponents.path;
         [bundleURLComponents release];
@@ -126,8 +118,7 @@
 
 - (void)configureMetadataQueryQueue {
     NSOperationQueue *metadataQueryQueue = [NSOperationQueue new];
-    metadataQueryQueue.qualityOfService = NSQualityOfServiceUtility;
-//    metadataQueryQueue.maxConcurrentOperationCount = 1;
+    metadataQueryQueue.qualityOfService = NSQualityOfServiceBackground;
     self.metadataQueryQueue = metadataQueryQueue;
     [metadataQueryQueue release];
 }
@@ -135,9 +126,7 @@
 - (void)configureMetadataQuery {
     NSMetadataQuery *metadataQuery = [NSMetadataQuery new];
     
-    // TODO: TEST
-    metadataQuery.predicate = [NSPredicate predicateWithFormat:@"kMDItemContentTypeTree contains 'com.apple.application'"];
-//    metadataQuery.predicate = [NSPredicate predicateWithFormat:@"kMDItemKind == 'Application'"];
+    metadataQuery.predicate = [NSPredicate predicateWithFormat:@"(kMDItemContentTypeTree contains 'com.apple.application') || (kMDItemKind == 'Application')"];
     metadataQuery.searchScopes = @[NSMetadataQueryIndexedLocalComputerScope];
     metadataQuery.operationQueue = self.metadataQueryQueue;
     

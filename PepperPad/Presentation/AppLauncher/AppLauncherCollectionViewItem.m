@@ -12,12 +12,16 @@
 
 @interface AppLauncherCollectionViewItem ()
 @property (retain) NSBox *runningIndicatorBox;
+@property (retain) NSOperationQueue *queue;
+@property (retain) NSOperation * _Nullable currentOperation;
 @end
 
 @implementation AppLauncherCollectionViewItem
 
 - (void)dealloc {
     [_runningIndicatorBox release];
+    [_queue release];
+    [_currentOperation release];
     [super dealloc];
 }
 
@@ -32,6 +36,7 @@
     [self configureRunningIndicatorBox];
     [self configureImageView];
     [self configureTextField];
+    [self configureQueue];
 }
 
 - (void)configureWithApplicationProxy:(LSApplicationProxy *)applicationProxy isRunning:(BOOL)isRunning {
@@ -54,7 +59,6 @@
         NSData * _Nullable iconData = [[NSData alloc] initWithContentsOfURL:resourceAbsoluteURL options:0 error:&error];
 
         if ((error != nil) || (iconData == nil)) {
-            [iconData release];
             foundImage = NO;
         } else {
             NSImage * _Nullable iconImage = [[NSImage alloc] initWithData:iconData];
@@ -68,12 +72,14 @@
             
             [iconImage release];
         }
+        
+        [iconData release];
     } else {
         foundImage = NO;
     }
     
     if (!foundImage) {
-        [NSImage imageWithSystemSymbolName:@"app.dashed" accessibilityDescription:nil];
+        self.imageView.image = [NSImage imageWithSystemSymbolName:@"app.dashed" accessibilityDescription:nil];
     }
 }
 
@@ -122,6 +128,13 @@
     
     self.textField = textField;
     [textField release];
+}
+
+- (void)configureQueue {
+    NSOperationQueue *queue = [NSOperationQueue new];
+    
+    self.queue = queue;
+    [queue release];
 }
 
 @end

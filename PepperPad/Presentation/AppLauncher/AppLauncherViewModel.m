@@ -23,7 +23,16 @@ typedef NSDiffableDataSourceSnapshot<AppLauncherSectionModel *, AppLauncherItemM
 
 - (void)_Sort_AppLauncherViewModel_sortItemModels {
     [self sortItemsWithSectionIdentifiers:self.sectionIdentifiers usingComparator:^NSComparisonResult(AppLauncherItemModel * _Nonnull obj1, AppLauncherItemModel * _Nonnull obj2) {
-        return [obj1.applicationProxy.localizedName compare:obj2.applicationProxy.localizedName options:NSCaseInsensitiveSearch];
+        NSComparisonResult localizedNameComparisonResult = [obj1.applicationProxy.localizedName compare:obj2.applicationProxy.localizedName options:NSCaseInsensitiveSearch];
+        
+        switch (localizedNameComparisonResult) {
+            case NSOrderedSame: {
+                NSComparisonResult bundleURLComparisonResult = [obj1.applicationProxy.bundleURL.path compare:obj2.applicationProxy.bundleURL.path];
+                return bundleURLComparisonResult;
+            }
+            default:
+                return localizedNameComparisonResult;
+        }
     }];
 }
 
@@ -78,7 +87,8 @@ typedef NSDiffableDataSourceSnapshot<AppLauncherSectionModel *, AppLauncherItemM
 }
 
 - (void)configureQueue {
-    dispatch_queue_t queue = dispatch_queue_create(APP_LAUNCHER_VIEW_MODEL_SERIAL_QUEUE_LABEL, DISPATCH_QUEUE_SERIAL);
+    dispatch_queue_attr_t attribute = dispatch_queue_attr_make_with_qos_class(DISPATCH_QUEUE_SERIAL, QOS_CLASS_UTILITY, 0);
+    dispatch_queue_t queue = dispatch_queue_create(APP_LAUNCHER_VIEW_MODEL_SERIAL_QUEUE_LABEL, attribute);
     self.queue = queue;
     dispatch_release(queue);
 }
