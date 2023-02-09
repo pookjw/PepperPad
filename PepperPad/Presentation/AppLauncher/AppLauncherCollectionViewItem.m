@@ -11,16 +11,28 @@
 #import "LSIconResource.h"
 
 @interface AppLauncherCollectionViewItem ()
+@property (class, readonly, retain) NSOperationQueue *queue;
 @property (retain) NSBox *runningIndicatorBox;
-@property (retain) NSOperationQueue *queue;
-@property (retain) NSOperation * _Nullable currentOperation;
+@property (retain) NSBlockOperation * _Nullable currentOperation;
 @end
 
 @implementation AppLauncherCollectionViewItem
 
++ (NSOperationQueue *)queue {
+    static NSOperationQueue * _Nullable queue = nil;
+    static dispatch_once_t onceToken;
+    
+    dispatch_once(&onceToken, ^{
+        queue = [NSOperationQueue new];
+        queue.qualityOfService = NSQualityOfServiceUserInitiated;
+        queue.maxConcurrentOperationCount = 3;
+    });
+    
+    return queue;
+}
+
 - (void)dealloc {
     [_runningIndicatorBox release];
-    [_queue release];
     [_currentOperation release];
     [super dealloc];
 }
@@ -36,7 +48,6 @@
     [self configureRunningIndicatorBox];
     [self configureImageView];
     [self configureTextField];
-    [self configureQueue];
 }
 
 - (void)configureWithApplicationProxy:(LSApplicationProxy *)applicationProxy isRunning:(BOOL)isRunning {
@@ -49,38 +60,59 @@
         self.textField.stringValue = @"";
     }
     
-    LSIconResource *iconResource = [LSIconResource resourceForURL:applicationProxy.bundleURL];
-    NSString * _Nullable resourceRelativePath = iconResource.resourceRelativePath;
+    [self.currentOperation cancel];
+    
+    NSImageView *imageView = self.imageView;
+    imageView.image = nil;
+    
+    __block NSBlockOperation *currentOperation = [NSBlockOperation blockOperationWithBlock:^{
+        LSIconResource *iconResource = [LSIconResource resourceForURL:applicationProxy.bundleURL];
+        NSString * _Nullable resourceRelativePath = iconResource.resourceRelativePath;
 
-    BOOL foundImage;
-    if (resourceRelativePath) {
-        NSURL *resourceAbsoluteURL = [iconResource.resourceURL URLByAppendingPathComponent:resourceRelativePath isDirectory:NO];
-        NSError * __autoreleasing _Nullable error = nil;
-        NSData * _Nullable iconData = [[NSData alloc] initWithContentsOfURL:resourceAbsoluteURL options:0 error:&error];
-
-        if ((error != nil) || (iconData == nil)) {
-            foundImage = NO;
-        } else {
-            NSImage * _Nullable iconImage = [[NSImage alloc] initWithData:iconData];
+        NSImage * __autoreleasing _Nullable iconImage = nil;
+        
+        if (resourceRelativePath) {
+            NSURL *resourceAbsoluteURL = [iconResource.resourceURL URLByAppendingPathComponent:resourceRelativePath isDirectory:NO];
+            NSError * __autoreleasing _Nullable error = nil;
+            NSData * _Nullable iconData = [[NSData alloc] initWithContentsOfURL:resourceAbsoluteURL options:0 error:&error];
             
-            if (iconImage) {
-                self.imageView.image = iconImage;
-                foundImage = YES;
-            } else {
-                foundImage = NO;
+            if (currentOperation.isCancelled) {
+                [iconData release];
+                return;
+            }
+
+            if ((error == nil) && (iconData != nil)) {
+                iconImage = [[[NSImage alloc] initWithData:iconData] autorelease];
             }
             
-            [iconImage release];
+            [iconData release];
         }
         
-        [iconData release];
-    } else {
-        foundImage = NO;
-    }
+        if (iconImage == nil) {
+            iconImage = [NSImage imageWithSystemSymbolName:@"app.dashed" accessibilityDescription:nil];
+        }
+        
+        if (currentOperation.isCancelled) {
+            return;
+        }
+        
+        [NSThread sleepForTimeInterval:1.f];
+        
+        [currentOperation retain];
+        [NSOperationQueue.mainQueue addOperationWithBlock:^{
+            BOOL isCancelled = currentOperation.isCancelled;
+            [currentOperation release];
+            
+            if (isCancelled) {
+                return;
+            }
+            
+            imageView.image = iconImage;
+        }];
+    }];
     
-    if (!foundImage) {
-        self.imageView.image = [NSImage imageWithSystemSymbolName:@"app.dashed" accessibilityDescription:nil];
-    }
+    [AppLauncherCollectionViewItem.queue addOperation:currentOperation];
+    self.currentOperation = currentOperation;
 }
 
 - (void)configureRunningIndicatorBox {
@@ -128,13 +160,6 @@
     
     self.textField = textField;
     [textField release];
-}
-
-- (void)configureQueue {
-    NSOperationQueue *queue = [NSOperationQueue new];
-    
-    self.queue = queue;
-    [queue release];
 }
 
 @end

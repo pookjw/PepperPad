@@ -19,7 +19,7 @@
 @implementation PPApplicationWorkspace
 
 + (PPApplicationWorkspace *)sharedInstance {
-    static PPApplicationWorkspace *sharedInstance = nil;
+    static PPApplicationWorkspace * _Nullable sharedInstance = nil;
     static dispatch_once_t onceToken;
     
     dispatch_once(&onceToken, ^{
@@ -67,12 +67,12 @@
     NSArray<LSApplicationProxy *> *allApplications = [[LSApplicationWorkspace defaultWorkspace] allApplications];
     NSArray<NSURLComponents *> * _Nullable allowedApplicationBaseURLComponents = self.allowedApplicationBaseURLComponents;
     
-    if (allowedApplicationBaseURLComponents == nil) return allApplications;
-    
     NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(LSApplicationProxy * _Nullable evaluatedObject, NSDictionary<NSString *,id> * _Nullable bindings) {
-        if (evaluatedObject.isInstalled) {
+        if (!evaluatedObject.isInstalled) {
             return NO;
         }
+        
+        if (allowedApplicationBaseURLComponents == nil) return YES;
         
         NSURL * _Nullable bundleURL = evaluatedObject.bundleURL;
         if (bundleURL == nil) return NO;
