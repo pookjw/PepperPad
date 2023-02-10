@@ -9,9 +9,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface AppLauncherCollectionViewLayout : NSCollectionViewCompositionalLayout
-- (instancetype)init;
-+ (instancetype)new;
+@interface AppLauncherCollectionViewLayout : NSCollectionViewLayout
 @end
 
 NS_ASSUME_NONNULL_END
