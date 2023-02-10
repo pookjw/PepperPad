@@ -11,28 +11,16 @@
 #import "LSIconResource.h"
 
 @interface AppLauncherCollectionViewItem ()
-@property (class, readonly, retain) NSOperationQueue *queue;
 @property (retain) NSBox *runningIndicatorBox;
+@property (retain) NSOperationQueue *queue;
 @property (retain) NSBlockOperation * _Nullable currentOperation;
 @end
 
 @implementation AppLauncherCollectionViewItem
 
-+ (NSOperationQueue *)queue {
-    static NSOperationQueue * _Nullable queue = nil;
-    static dispatch_once_t onceToken;
-    
-    dispatch_once(&onceToken, ^{
-        queue = [NSOperationQueue new];
-        queue.qualityOfService = NSQualityOfServiceUserInitiated;
-        queue.maxConcurrentOperationCount = 3;
-    });
-    
-    return queue;
-}
-
 - (void)dealloc {
     [_runningIndicatorBox release];
+    [_queue release];
     [_currentOperation release];
     [super dealloc];
 }
@@ -48,6 +36,7 @@
     [self configureRunningIndicatorBox];
     [self configureImageView];
     [self configureTextField];
+    [self configureQueue];
 }
 
 - (void)configureWithApplicationProxy:(LSApplicationProxy *)applicationProxy isRunning:(BOOL)isRunning {
@@ -106,7 +95,7 @@
         }];
     }];
     
-    [AppLauncherCollectionViewItem.queue addOperation:currentOperation];
+    [self.queue addOperation:currentOperation];
     self.currentOperation = currentOperation;
 }
 
@@ -155,6 +144,14 @@
     
     self.textField = textField;
     [textField release];
+}
+
+- (void)configureQueue {
+    NSOperationQueue *queue = [NSOperationQueue new];
+    queue.qualityOfService = NSQualityOfServiceUserInitiated;
+    queue.maxConcurrentOperationCount = 3;
+    self.queue = queue;
+    [queue release];
 }
 
 @end
