@@ -96,8 +96,6 @@
             return;
         }
         
-        [NSThread sleepForTimeInterval:1.f];
-        
         [currentOperation retain];
         [NSOperationQueue.mainQueue addOperationWithBlock:^{
             BOOL isCancelled = currentOperation.isCancelled;
