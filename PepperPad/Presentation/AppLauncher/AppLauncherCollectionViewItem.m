@@ -68,6 +68,10 @@
     __block NSBlockOperation *currentOperation = [NSBlockOperation blockOperationWithBlock:^{
         LSIconResource *iconResource = [LSIconResource resourceForURL:applicationProxy.bundleURL];
         NSString * _Nullable resourceRelativePath = iconResource.resourceRelativePath;
+        
+//        if ([applicationProxy.bundleIdentifier isEqualToString:@"com.apple.ActivityMonitor"]) {
+//            NSLog(@"%@", iconResource.resourceRelativePath);
+//        }
 
         NSImage * __autoreleasing _Nullable iconImage = nil;
         
@@ -75,13 +79,8 @@
             NSURL *resourceAbsoluteURL = [iconResource.resourceURL URLByAppendingPathComponent:resourceRelativePath isDirectory:NO];
             NSError * __autoreleasing _Nullable error = nil;
             NSData * _Nullable iconData = [[NSData alloc] initWithContentsOfURL:resourceAbsoluteURL options:0 error:&error];
-            
-            if (currentOperation.isCancelled) {
-                [iconData release];
-                return;
-            }
 
-            if ((error == nil) && (iconData != nil)) {
+            if ((!currentOperation.isCancelled) && (error == nil) && (iconData != nil)) {
                 iconImage = [[[NSImage alloc] initWithData:iconData] autorelease];
             }
             
