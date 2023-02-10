@@ -100,11 +100,9 @@
             BOOL isCancelled = currentOperation.isCancelled;
             [currentOperation release];
             
-            if (isCancelled) {
-                return;
+            if (!isCancelled) {
+                imageView.image = iconImage;
             }
-            
-            imageView.image = iconImage;
         }];
     }];
     
