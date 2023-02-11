@@ -40,7 +40,18 @@
     NSSize itemMaxSize = self.itemMaxSize;
     NSSize collectionViewContentSize = self.collectionViewContentSize;
     NSUInteger firstItem = (NSUInteger)(rect.origin.y / itemMaxSize.height);
-    NSUInteger numberOfItemsInRect = (NSUInteger)(rect.size.height / item)
+    NSUInteger numberOfItemsInRect = (NSUInteger)(rect.size.height / itemMaxSize.height);
+    
+    NSMutableArray<NSCollectionViewLayoutAttributes *> *results = [NSMutableArray<NSCollectionViewLayoutAttributes *> new];
+    for (NSUInteger itemIndex = firstItem; itemIndex < numberOfItemsInRect; itemIndex++) {
+        NSAutoreleasePool *pool = [NSAutoreleasePool new];
+        
+        NSIndexPath *indexPath = [NSIndexPath indexPathForItem:itemIndex inSection:0];
+        NSCollectionViewLayoutAttributes *layoutAttribute = [NSCollectionViewLayoutAttributes layoutAttributesForItemWithIndexPath:indexPath];
+        
+        
+        [pool release];
+    }
 }
 
 - (NSCollectionViewLayoutAttributes *)layoutAttributesForItemAtIndexPath:(NSIndexPath *)indexPath {
