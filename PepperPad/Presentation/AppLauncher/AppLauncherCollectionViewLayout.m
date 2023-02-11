@@ -39,7 +39,7 @@
 - (NSArray<__kindof NSCollectionViewLayoutAttributes *> *)layoutAttributesForElementsInRect:(NSRect)rect {
     NSSize itemMaxSize = self.itemMaxSize;
     NSSize collectionViewContentSize = self.collectionViewContentSize;
-    NSUInteger firstItem = (NSUInteger)(rect.origin.y / itemMaxSize.height) + ((rect.origin.y % itemMaxSize.height));
+    NSUInteger firstItem = (NSUInteger)(rect.origin.y / itemMaxSize.height);
     NSUInteger numberOfItemsInRect = (NSUInteger)(rect.size.height / item)
 }
 
