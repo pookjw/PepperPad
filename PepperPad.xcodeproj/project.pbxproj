@@ -12,6 +12,7 @@
 		4F0CD43D298E543C00FD7D91 /* NSDiffableDataSourceSnapshot+Sort.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F0CD43C298E543C00FD7D91 /* NSDiffableDataSourceSnapshot+Sort.m */; };
 		4F0CD441298E586400FD7D91 /* PPApplicationWorkspace.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F0CD440298E586400FD7D91 /* PPApplicationWorkspace.m */; };
 		4F11B4D52993F24B002B27FF /* LSApplicationProxy+isRunning.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F11B4D42993F24B002B27FF /* LSApplicationProxy+isRunning.m */; };
+		4F11B4D92997E7A0002B27FF /* AppLauncherCollectionViewListLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F11B4D82997E7A0002B27FF /* AppLauncherCollectionViewListLayout.m */; };
 		4F51C99A2980272300B80AFD /* swizzle.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F51C9982980272300B80AFD /* swizzle.m */; };
 		4F549E1C298964CF0089245F /* AppLauncherCollectionViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F549E1B298964CF0089245F /* AppLauncherCollectionViewLayout.m */; };
 		4F92378F298A8CF4003FB238 /* AppLauncherSectionModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F92378E298A8CF4003FB238 /* AppLauncherSectionModel.m */; };
@@ -39,6 +40,8 @@
 		4F0CD440298E586400FD7D91 /* PPApplicationWorkspace.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PPApplicationWorkspace.m; sourceTree = "<group>"; };
 		4F11B4D32993F222002B27FF /* LSApplicationProxy+isRunning.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "LSApplicationProxy+isRunning.h"; sourceTree = "<group>"; };
 		4F11B4D42993F24B002B27FF /* LSApplicationProxy+isRunning.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "LSApplicationProxy+isRunning.m"; sourceTree = "<group>"; };
+		4F11B4D72997E7A0002B27FF /* AppLauncherCollectionViewListLayout.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppLauncherCollectionViewListLayout.h; sourceTree = "<group>"; };
+		4F11B4D82997E7A0002B27FF /* AppLauncherCollectionViewListLayout.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppLauncherCollectionViewListLayout.m; sourceTree = "<group>"; };
 		4F1E60FC298923210051D5C2 /* LSBundleProxy.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LSBundleProxy.h; sourceTree = "<group>"; };
 		4F1E60FD298947830051D5C2 /* LSIconResource.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LSIconResource.h; sourceTree = "<group>"; };
 		4F51C9982980272300B80AFD /* swizzle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = swizzle.m; sourceTree = "<group>"; };
@@ -208,6 +211,8 @@
 				4F923791298A8CFE003FB238 /* AppLauncherItemModel.m */,
 				4F549E1A298964CF0089245F /* AppLauncherCollectionViewLayout.h */,
 				4F549E1B298964CF0089245F /* AppLauncherCollectionViewLayout.m */,
+				4F11B4D72997E7A0002B27FF /* AppLauncherCollectionViewListLayout.h */,
+				4F11B4D82997E7A0002B27FF /* AppLauncherCollectionViewListLayout.m */,
 				4F92379C298C033F003FB238 /* AppLauncherCollectionViewItem.h */,
 				4F92379D298C033F003FB238 /* AppLauncherCollectionViewItem.m */,
 			);
@@ -312,6 +317,7 @@
 				4F92379E298C033F003FB238 /* AppLauncherCollectionViewItem.m in Sources */,
 				4F92378F298A8CF4003FB238 /* AppLauncherSectionModel.m in Sources */,
 				4F923792298A8CFE003FB238 /* AppLauncherItemModel.m in Sources */,
+				4F11B4D92997E7A0002B27FF /* AppLauncherCollectionViewListLayout.m in Sources */,
 				4F92379B298BFED3003FB238 /* NSCollectionViewDiffableDataSource+ApplySnapshotAndWait.m in Sources */,
 				4F51C99A2980272300B80AFD /* swizzle.m in Sources */,
 			);

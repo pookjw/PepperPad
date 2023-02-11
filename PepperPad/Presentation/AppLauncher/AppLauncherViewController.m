@@ -8,6 +8,7 @@
 #import "AppLauncherViewController.h"
 #import "AppLauncherViewModel.h"
 #import "AppLauncherCollectionViewLayout.h"
+#import "AppLauncherCollectionViewListLayout.h"
 #import "AppLauncherCollectionViewItem.h"
 #import "NSAlert+ApplyErrorStyle.h"
 
@@ -83,6 +84,7 @@
 
 - (void)configureCollectionView {
     AppLauncherCollectionViewLayout *collectionViewLayout = [AppLauncherCollectionViewLayout new];
+//    AppLauncherCollectionViewListLayout *collectionViewLayout = [AppLauncherCollectionViewListLayout new];
     NSCollectionView *collectionView = [NSCollectionView new];
     collectionView.collectionViewLayout = collectionViewLayout;
     [collectionViewLayout release];
