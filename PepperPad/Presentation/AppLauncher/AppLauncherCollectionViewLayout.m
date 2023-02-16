@@ -45,20 +45,26 @@
     
     NSMutableArray<NSCollectionViewLayoutAttributes *> *layoutAttributes = [NSMutableArray<NSCollectionViewLayoutAttributes *> new];
     
-    for (NSInteger itemIndex = 0; itemIndex < numberOfItems; itemIndex++) {
+    for (NSInteger itemIndex = 2; itemIndex < numberOfItems + 2; itemIndex++) {
         NSAutoreleasePool *pool = [NSAutoreleasePool new];
         
         NSInteger cycle = [self cycleOfItemIndex:itemIndex];
         NSInteger numberOfItemsInCycle = [self numberOfItemsInCycle:cycle];
         NSInteger remaindarOfItemIndex = [self remaindarOfItemIndex:itemIndex];
         
-        NSLog(@"%ld, %ld ,%ld", cycle, numberOfItemsInCycle, remaindarOfItemIndex);
+//        NSLog(@"%ld, %ld ,%ld", cycle, numberOfItemsInCycle, remaindarOfItemIndex);
         
-        CGFloat degree = 2 * M_PI * remaindarOfItemIndex / numberOfItemsInCycle;
+        CGFloat degree;
+        if (cycle == 0) {
+            degree = 0;
+        } else {
+            degree = 2 * M_PI * remaindarOfItemIndex / numberOfItemsInCycle;
+        }
         NSIndexPath *indexPath = [NSIndexPath indexPathForItem:itemIndex inSection:0];
         
         NSCollectionViewLayoutAttributes *layoutAttribute = [NSCollectionViewLayoutAttributes layoutAttributesForItemWithIndexPath:indexPath];
-        layoutAttribute.frame = NSMakeRect(center.x + cycle * itemMaxSize.width * cos(degree), center.y + cycle * itemMaxSize.height * sin(degree), itemMaxSize.width, itemMaxSize.height);
+        
+        layoutAttribute.frame = NSMakeRect(center.x + (cycle - 1) * itemMaxSize.width * cos(degree), center.y + (cycle - 1) * itemMaxSize.height * sin(degree), itemMaxSize.width, itemMaxSize.height);
         [layoutAttributes addObject:layoutAttribute];
         
         [pool release];
@@ -138,8 +144,8 @@
 }
 
 - (NSInteger)cycleOfItemIndex:(NSInteger)itemIndex {
+    if (itemIndex == 0) return 0;
     if (self.collectionView.numberOfSections == 0) return 0;
-//    if (itemIndex == 0) return 0;
     
     NSInteger numberOfItems = [self.collectionView numberOfItemsInSection:0];
     if (numberOfItems == 0) return 0;
@@ -160,6 +166,7 @@
 }
 
 - (NSInteger)remaindarOfItemIndex:(NSInteger)itemIndex {
+    if (itemIndex == 0) return 0;
     if (self.collectionView.numberOfSections == 0) return 0;
     
     NSInteger numberOfItems = [self.collectionView numberOfItemsInSection:0];
@@ -172,7 +179,7 @@
         NSInteger numberOfItemsInCycle = [self numberOfItemsInCycle:cycle];
         
         if ((tmp - numberOfItemsInCycle) <= 0) {
-            return tmp;
+            return tmp - 1;
         } else {
             tmp -= numberOfItemsInCycle;
             cycle += 1;
