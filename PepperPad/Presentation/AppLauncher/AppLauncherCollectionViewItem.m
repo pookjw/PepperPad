@@ -6,7 +6,6 @@
 //
 
 #import "AppLauncherCollectionViewItem.h"
-#import "NSTextField+ApplyLabelStyle.h"
 #import "NSBox+ApplySimpleBoxStyle.h"
 #import "LSIconResource.h"
 
@@ -35,12 +34,11 @@
     [super viewDidLoad];
     [self configureRunningIndicatorBox];
     [self configureImageView];
-    [self configureTextField];
     [self configureQueue];
 }
 
 - (void)configureWithApplicationProxy:(LSApplicationProxy *)applicationProxy isRunning:(BOOL)isRunning {
-    self.runningIndicatorBox.fillColor = isRunning ? NSColor.systemPurpleColor : NSColor.clearColor;
+    self.runningIndicatorBox.fillColor = isRunning ? [NSColor.systemPurpleColor colorWithAlphaComponent:0.2f] : [NSColor.systemCyanColor colorWithAlphaComponent:0.1f];
     
     NSString * _Nullable localizedName = applicationProxy.localizedName;
     if (localizedName) {
@@ -107,8 +105,8 @@
     [NSLayoutConstraint activateConstraints:@[
         [runningIndicatorBox.topAnchor constraintEqualToAnchor:self.view.topAnchor],
         [runningIndicatorBox.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor],
-        [runningIndicatorBox.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor],
-        [runningIndicatorBox.widthAnchor constraintEqualToConstant:10.f]
+        [runningIndicatorBox.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor],
+        [runningIndicatorBox.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor]
     ]];
     
     self.runningIndicatorBox = runningIndicatorBox;
@@ -121,29 +119,13 @@
     [self.view addSubview:imageView];
     [NSLayoutConstraint activateConstraints:@[
         [imageView.topAnchor constraintEqualToAnchor:self.view.topAnchor],
-        [imageView.leadingAnchor constraintEqualToAnchor:self.runningIndicatorBox.trailingAnchor],
-        [imageView.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor],
-        [imageView.widthAnchor constraintEqualToAnchor:self.view.heightAnchor]
+        [imageView.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor],
+        [imageView.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor],
+        [imageView.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor]
     ]];
     
     self.imageView = imageView;
     [imageView release];
-}
-
-- (void)configureTextField {
-    NSTextField *textField = [[NSTextField alloc] initWithFrame:self.view.bounds];
-    [textField applyLabelStyle];
-    textField.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.view addSubview:textField];
-    [NSLayoutConstraint activateConstraints:@[
-        [textField.topAnchor constraintEqualToAnchor:self.view.topAnchor],
-        [textField.leadingAnchor constraintEqualToAnchor:self.imageView.trailingAnchor],
-        [textField.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor],
-        [textField.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor]
-    ]];
-    
-    self.textField = textField;
-    [textField release];
 }
 
 - (void)configureQueue {
