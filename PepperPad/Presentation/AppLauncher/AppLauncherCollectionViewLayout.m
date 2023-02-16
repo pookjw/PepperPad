@@ -139,7 +139,7 @@
 
 - (NSInteger)cycleOfItemIndex:(NSInteger)itemIndex {
     if (self.collectionView.numberOfSections == 0) return 0;
-    if (itemIndex == 0) return 0;
+//    if (itemIndex == 0) return 0;
     
     NSInteger numberOfItems = [self.collectionView numberOfItemsInSection:0];
     if (numberOfItems == 0) return 0;
