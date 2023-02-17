@@ -66,8 +66,11 @@
 - (void)configureScrollView {
     NSScrollView *scrollView = [NSScrollView new];
     scrollView.drawsBackground = NO;
+    scrollView.allowsMagnification = YES;
 //    scrollView.hasHorizontalScroller = NO;
 //    scrollView.hasVerticalScroller = NO;
+//    scrollView.horizontalScrollElasticity = NSScrollElasticityAllowed;
+//    scrollView.verticalScrollElasticity = NSScrollElasticityAllowed;
     scrollView.translatesAutoresizingMaskIntoConstraints = NO;
     
     [self.visualEffectView addSubview:scrollView];
