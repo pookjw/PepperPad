@@ -7,6 +7,7 @@
 
 #import "AppLauncherViewController.h"
 #import "AppLauncherViewModel.h"
+#import "AppLauncherCollectionView.h"
 #import "AppLauncherCollectionViewLayout.h"
 #import "AppLauncherCollectionViewListLayout.h"
 #import "AppLauncherCollectionViewItem.h"
@@ -15,7 +16,7 @@
 @interface AppLauncherViewController () <NSCollectionViewDelegate>
 @property (retain) NSVisualEffectView *visualEffectView;
 @property (retain) NSScrollView *scrollView;
-@property (retain) NSCollectionView *collectionView;
+@property (retain) AppLauncherCollectionView *collectionView;
 @property (retain) AppLauncherViewModel *viewModel;
 @end
 
@@ -67,8 +68,8 @@
     NSScrollView *scrollView = [NSScrollView new];
     scrollView.drawsBackground = NO;
     scrollView.allowsMagnification = YES;
-//    scrollView.hasHorizontalScroller = NO;
-//    scrollView.hasVerticalScroller = NO;
+    scrollView.hasHorizontalScroller = NO;
+    scrollView.hasVerticalScroller = NO;
 //    scrollView.horizontalScrollElasticity = NSScrollElasticityAllowed;
 //    scrollView.verticalScrollElasticity = NSScrollElasticityAllowed;
     scrollView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -88,7 +89,7 @@
 - (void)configureCollectionView {
     AppLauncherCollectionViewLayout *collectionViewLayout = [AppLauncherCollectionViewLayout new];
 //    AppLauncherCollectionViewListLayout *collectionViewLayout = [AppLauncherCollectionViewListLayout new];
-    NSCollectionView *collectionView = [NSCollectionView new];
+    AppLauncherCollectionView *collectionView = [AppLauncherCollectionView new];
     collectionView.collectionViewLayout = collectionViewLayout;
     [collectionViewLayout release];
     
@@ -98,6 +99,7 @@
     collectionView.delegate = self;
     
     self.scrollView.documentView = collectionView;
+    NSLog(@"%@", self.scrollView.contentView.documentView);
     self.collectionView = collectionView;
     [collectionView release];
 }

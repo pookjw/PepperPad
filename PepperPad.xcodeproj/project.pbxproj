@@ -25,6 +25,7 @@
 		4FF3F82D2973C2B5008DE74D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4FF3F82C2973C2B5008DE74D /* Assets.xcassets */; };
 		4FF3F8322973C2B5008DE74D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FF3F8312973C2B5008DE74D /* main.m */; };
 		4FF3F8672973CD65008DE74D /* AppLauncherViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FF3F8662973CD65008DE74D /* AppLauncherViewController.m */; };
+		4FF54041299FC7560010C209 /* AppLauncherCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FF54040299FC7560010C209 /* AppLauncherCollectionView.m */; };
 		4FF5942D2986EADD00A4E9FC /* AppLauncherViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FF5942C2986EADD00A4E9FC /* AppLauncherViewModel.m */; };
 		4FFE0BCF2980249C00737695 /* NSObject+Foundation_IvarDescription.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FFE0BCE2980249C00737695 /* NSObject+Foundation_IvarDescription.mm */; };
 /* End PBXBuildFile section */
@@ -70,6 +71,8 @@
 		4FF3F8332973C2B5008DE74D /* PepperPad.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PepperPad.entitlements; sourceTree = "<group>"; };
 		4FF3F8652973CD65008DE74D /* AppLauncherViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppLauncherViewController.h; sourceTree = "<group>"; };
 		4FF3F8662973CD65008DE74D /* AppLauncherViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppLauncherViewController.m; sourceTree = "<group>"; };
+		4FF5403F299FC7560010C209 /* AppLauncherCollectionView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppLauncherCollectionView.h; sourceTree = "<group>"; };
+		4FF54040299FC7560010C209 /* AppLauncherCollectionView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppLauncherCollectionView.m; sourceTree = "<group>"; };
 		4FF5942B2986EADD00A4E9FC /* AppLauncherViewModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppLauncherViewModel.h; sourceTree = "<group>"; };
 		4FF5942C2986EADD00A4E9FC /* AppLauncherViewModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppLauncherViewModel.m; sourceTree = "<group>"; };
 		4FF5942F2986EAFE00A4E9FC /* LSApplicationWorkspace.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LSApplicationWorkspace.h; sourceTree = "<group>"; };
@@ -209,6 +212,8 @@
 				4F92378E298A8CF4003FB238 /* AppLauncherSectionModel.m */,
 				4F923790298A8CFE003FB238 /* AppLauncherItemModel.h */,
 				4F923791298A8CFE003FB238 /* AppLauncherItemModel.m */,
+				4FF5403F299FC7560010C209 /* AppLauncherCollectionView.h */,
+				4FF54040299FC7560010C209 /* AppLauncherCollectionView.m */,
 				4F549E1A298964CF0089245F /* AppLauncherCollectionViewLayout.h */,
 				4F549E1B298964CF0089245F /* AppLauncherCollectionViewLayout.m */,
 				4F11B4D72997E7A0002B27FF /* AppLauncherCollectionViewListLayout.h */,
@@ -309,6 +314,7 @@
 				4F549E1C298964CF0089245F /* AppLauncherCollectionViewLayout.m in Sources */,
 				4F11B4D52993F24B002B27FF /* LSApplicationProxy+isRunning.m in Sources */,
 				4FF5942D2986EADD00A4E9FC /* AppLauncherViewModel.m in Sources */,
+				4FF54041299FC7560010C209 /* AppLauncherCollectionView.m in Sources */,
 				4FF3F8282973C2B4008DE74D /* AppDelegate.m in Sources */,
 				4F0CD43A298E454400FD7D91 /* NSAlert+ApplyErrorStyle.m in Sources */,
 				4F0CD441298E586400FD7D91 /* PPApplicationWorkspace.m in Sources */,

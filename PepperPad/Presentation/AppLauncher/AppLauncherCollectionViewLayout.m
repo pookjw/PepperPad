@@ -6,6 +6,19 @@
 //
 
 #import "AppLauncherCollectionViewLayout.h"
+#import <math.h>
+
+struct CycleData {
+    NSInteger cycle;
+    NSInteger remainder;
+};
+
+const struct CycleData makeCycleData(NSInteger cycle, NSInteger remainder) {
+    struct CycleData cycleData;
+    cycleData.cycle = cycle;
+    cycleData.remainder = remainder;
+    return cycleData;
+}
 
 @interface AppLauncherCollectionViewLayout ()
 @property (readonly) NSSize itemMaxSize;
@@ -25,10 +38,10 @@
 
 - (NSSize)collectionViewContentSize {
     NSInteger totalCycle = [self totalCycle];
-    NSInteger sideLength = (totalCycle * 2) - 1;
+    NSInteger sideLength = MAX((totalCycle * 2) - 1, 0);
     NSSize itemMaxSize = self.itemMaxSize;
     
-    return NSMakeSize(sideLength * itemMaxSize.width, sideLength * itemMaxSize.height);
+    return NSMakeSize(sideLength * itemMaxSize.width * M_SQRT2, sideLength * itemMaxSize.height * M_SQRT2);
 }
 
 - (void)prepareLayout {
@@ -48,22 +61,26 @@
     for (NSInteger itemIndex = 0; itemIndex < numberOfItems; itemIndex++) {
         NSAutoreleasePool *pool = [NSAutoreleasePool new];
         
-        NSInteger cycle = [self cycleOfItemIndex:itemIndex];
+        const struct CycleData cycleData = [self cycleDataFromItemIndex:itemIndex];
+        NSInteger cycle = cycleData.cycle;
+        NSInteger remainderOfItemIndex = cycleData.remainder;
         NSInteger numberOfItemsInCycle = [self numberOfItemsInCycle:cycle];
-        NSInteger remaindarOfItemIndex = [self remaindarOfItemIndex:itemIndex];
         
         CGFloat degree;
         if (numberOfItemsInCycle == 0) {
             degree = 0;
         } else {
-            degree = 2 * M_PI * remaindarOfItemIndex / numberOfItemsInCycle;
+            degree = 2 * M_PI * remainderOfItemIndex / numberOfItemsInCycle;
         }
         
         NSIndexPath *indexPath = [NSIndexPath indexPathForItem:itemIndex inSection:0];
         
         NSCollectionViewLayoutAttributes *layoutAttribute = [NSCollectionViewLayoutAttributes layoutAttributesForItemWithIndexPath:indexPath];
+        layoutAttribute.frame = NSMakeRect(center.x + cycle * itemMaxSize.width * M_SQRT2 * cos(degree),
+                                           center.y + cycle * itemMaxSize.height * M_SQRT2 * sin(degree),
+                                           itemMaxSize.width,
+                                           itemMaxSize.height);
         
-        layoutAttribute.frame = NSMakeRect(center.x + cycle * itemMaxSize.width * cos(degree), center.y + cycle * itemMaxSize.height * sin(degree), itemMaxSize.width, itemMaxSize.height);
         [layoutAttributes addObject:layoutAttribute];
         
         [pool release];
@@ -136,44 +153,23 @@
     return ((cycle + 1) * 2) + ((cycle * 2) - 1) * 2;
 }
 
-- (NSInteger)cycleOfItemIndex:(NSInteger)itemIndex {
-    if (itemIndex == 0) return 0;
-    if (self.collectionView.numberOfSections == 0) return 0;
+- (const struct CycleData)cycleDataFromItemIndex:(NSInteger)itemIndex {
+    if (itemIndex == 0) return makeCycleData(0, 0);
+    if (self.collectionView.numberOfSections == 0) return makeCycleData(0, 0);
     
     NSInteger numberOfItems = [self.collectionView numberOfItemsInSection:0];
-    if (numberOfItems == 0) return 0;
+    if (numberOfItems == 0) return makeCycleData(0, 0);
     
     NSInteger cycle = 1;
-    NSInteger tmp = itemIndex;
+    NSInteger remainder = itemIndex;
     
     while (true) {
         NSInteger numberOfItemsInCycle = [self numberOfItemsInCycle:cycle];
         
-        if ((tmp - numberOfItemsInCycle) <= 0) {
-            return cycle;
+        if ((remainder - numberOfItemsInCycle) <= 0) {
+            return makeCycleData(cycle, remainder - 1);
         } else {
-            tmp -= numberOfItemsInCycle;
-            cycle += 1;
-        }
-    }
-}
-
-- (NSInteger)remaindarOfItemIndex:(NSInteger)itemIndex {
-    if (self.collectionView.numberOfSections == 0) return 0;
-    
-    NSInteger numberOfItems = [self.collectionView numberOfItemsInSection:0];
-    if (numberOfItems == 0) return 0;
-    
-    NSInteger cycle = 1;
-    NSInteger tmp = itemIndex;
-    
-    while (true) {
-        NSInteger numberOfItemsInCycle = [self numberOfItemsInCycle:cycle];
-        
-        if ((tmp - numberOfItemsInCycle) <= 0) {
-            return tmp - 1;
-        } else {
-            tmp -= numberOfItemsInCycle;
+            remainder -= numberOfItemsInCycle;
             cycle += 1;
         }
     }
