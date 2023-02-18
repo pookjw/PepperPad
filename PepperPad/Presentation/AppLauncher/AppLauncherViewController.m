@@ -99,7 +99,6 @@
     collectionView.delegate = self;
     
     self.scrollView.documentView = collectionView;
-    NSLog(@"%@", self.scrollView.contentView.documentView);
     self.collectionView = collectionView;
     [collectionView release];
 }
