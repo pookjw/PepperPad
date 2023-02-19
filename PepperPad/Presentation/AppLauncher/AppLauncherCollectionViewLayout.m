@@ -109,6 +109,9 @@ const struct CycleData makeCycleData(NSInteger cycle, NSInteger remainder) {
     [self.normalLayoutAttributes enumerateObjectsUsingBlock:^(NSCollectionViewLayoutAttributes * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         CGFloat scale = MIN(1.f, MAX(0.f, (1.f - (fabs(obj.frame.origin.x - center.x) * 2.f) / size.width)));
         
+        // Too small; no need to display.
+        if (scale < 0.01f) return;
+        
         NSCollectionViewLayoutAttributes *copy = [obj copy];
         
         CGFloat x;
