@@ -39,13 +39,7 @@
 
 - (void)configureWithApplicationProxy:(LSApplicationProxy *)applicationProxy isRunning:(BOOL)isRunning {
     self.runningIndicatorBox.fillColor = isRunning ? [NSColor.systemPurpleColor colorWithAlphaComponent:0.2f] : [NSColor.systemCyanColor colorWithAlphaComponent:0.1f];
-    
-    NSString * _Nullable localizedName = applicationProxy.localizedName;
-    if (localizedName) {
-        self.textField.stringValue = localizedName;
-    } else {
-        self.textField.stringValue = @"";
-    }
+    self.view.toolTip = applicationProxy.localizedName;
     
     [self.currentOperation cancel];
     

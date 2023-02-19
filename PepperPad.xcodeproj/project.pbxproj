@@ -63,6 +63,7 @@
 		4F9237A0298C0913003FB238 /* NSTextField+ApplyLabelStyle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSTextField+ApplyLabelStyle.h"; sourceTree = "<group>"; };
 		4F9237A2298C0F12003FB238 /* NSBox+ApplySimpleBoxStyle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSBox+ApplySimpleBoxStyle.m"; sourceTree = "<group>"; };
 		4F9237A3298C0F12003FB238 /* NSBox+ApplySimpleBoxStyle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSBox+ApplySimpleBoxStyle.h"; sourceTree = "<group>"; };
+		4FD4035029A23CD700DDCFA8 /* NSToolTipManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSToolTipManager.h; sourceTree = "<group>"; };
 		4FF3F8232973C2B4008DE74D /* PepperPad.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PepperPad.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4FF3F8262973C2B4008DE74D /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		4FF3F8272973C2B4008DE74D /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -234,6 +235,7 @@
 				4FF594302986F3EE00A4E9FC /* LSApplicationProxy.h */,
 				4F1E60FD298947830051D5C2 /* LSIconResource.h */,
 				4F923793298BF77B003FB238 /* NSCollectionViewDiffableDataSource+Private.h */,
+				4FD4035029A23CD700DDCFA8 /* NSToolTipManager.h */,
 			);
 			path = Private;
 			sourceTree = "<group>";

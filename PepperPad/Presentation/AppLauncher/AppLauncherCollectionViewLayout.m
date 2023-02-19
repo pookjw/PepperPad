@@ -22,13 +22,13 @@ const struct CycleData makeCycleData(NSInteger cycle, NSInteger remainder) {
 
 @interface AppLauncherCollectionViewLayout ()
 @property (readonly) NSSize itemMaxSize;
-@property (copy) NSArray<NSCollectionViewLayoutAttributes *> *layoutAttributes;
+@property (retain) NSArray<NSCollectionViewLayoutAttributes *> *normalLayoutAttributes;
 @end
 
 @implementation AppLauncherCollectionViewLayout
 
 - (void)dealloc {
-    [_layoutAttributes release];
+    [_normalLayoutAttributes release];
     [super dealloc];
 }
 
@@ -86,7 +86,7 @@ const struct CycleData makeCycleData(NSInteger cycle, NSInteger remainder) {
         [pool release];
     }
     
-    self.layoutAttributes = layoutAttributes;
+    self.normalLayoutAttributes = layoutAttributes;
     [layoutAttributes release];
 }
 
@@ -99,12 +99,39 @@ const struct CycleData makeCycleData(NSInteger cycle, NSInteger remainder) {
 }
 
 - (NSArray<__kindof NSCollectionViewLayoutAttributes *> *)layoutAttributesForElementsInRect:(NSRect)rect {
-    // TODO
-    return self.layoutAttributes;
+    NSRect clipViewBounds = self.collectionView.enclosingScrollView.contentView.bounds;
+    NSSize size = clipViewBounds.size;
+    NSPoint center = NSMakePoint(clipViewBounds.origin.x + size.width * 0.5f,
+                                 clipViewBounds.origin.y + size.height * 0.5f);
+    
+    NSMutableArray<NSCollectionViewLayoutAttributes *> *layoutAttributes = [NSMutableArray<NSCollectionViewLayoutAttributes *> new];
+    
+    [self.normalLayoutAttributes enumerateObjectsUsingBlock:^(NSCollectionViewLayoutAttributes * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        CGFloat scale = MIN(1.f, MAX(0.f, (1.f - (fabs(obj.frame.origin.x - center.x) * 2.f) / size.width)));
+        
+        NSCollectionViewLayoutAttributes *copy = [obj copy];
+        
+        CGFloat x;
+        if (copy.frame.origin.x < center.x) {
+            x = copy.frame.origin.x + (1.f - scale) * copy.frame.size.width;
+        } else {
+            x = copy.frame.origin.x - (1.f - scale) * copy.frame.size.width;
+        }
+        
+        copy.frame = NSMakeRect(x,
+                                copy.frame.origin.y,
+                                copy.frame.size.width * scale,
+                                copy.frame.size.height * scale);
+        
+        [layoutAttributes addObject:copy];
+        [copy release];
+    }];
+    
+    return [layoutAttributes autorelease];
 }
 
 - (NSCollectionViewLayoutAttributes *)layoutAttributesForItemAtIndexPath:(NSIndexPath *)indexPath {
-    return self.layoutAttributes[indexPath.item];
+    return self.normalLayoutAttributes[indexPath.item];
 }
 
 - (NSCollectionViewLayoutAttributes *)layoutAttributesForSupplementaryViewOfKind:(NSCollectionViewSupplementaryElementKind)elementKind atIndexPath:(NSIndexPath *)indexPath {
@@ -123,20 +150,12 @@ const struct CycleData makeCycleData(NSInteger cycle, NSInteger remainder) {
     return [super initialLayoutAttributesForAppearingItemAtIndexPath:itemIndexPath];
 }
 
-- (NSCollectionViewLayoutAttributes *)initialLayoutAttributesForAppearingSupplementaryElementOfKind:(NSCollectionViewSupplementaryElementKind)elementKind atIndexPath:(NSIndexPath *)elementIndexPath {
-    return [super initialLayoutAttributesForAppearingSupplementaryElementOfKind:elementKind atIndexPath:elementIndexPath];
-}
-
-- (NSSet<NSIndexPath *> *)indexPathsToDeleteForSupplementaryViewOfKind:(NSCollectionViewSupplementaryElementKind)elementKind {
-    return [super indexPathsToDeleteForSupplementaryViewOfKind:elementKind];
-}
-
 - (NSCollectionViewLayoutAttributes *)finalLayoutAttributesForDisappearingItemAtIndexPath:(NSIndexPath *)itemIndexPath {
     return [super finalLayoutAttributesForDisappearingItemAtIndexPath:itemIndexPath];
 }
 
-- (NSCollectionViewLayoutAttributes *)finalLayoutAttributesForDisappearingSupplementaryElementOfKind:(NSCollectionViewSupplementaryElementKind)elementKind atIndexPath:(NSIndexPath *)elementIndexPath {
-    return [super finalLayoutAttributesForDisappearingSupplementaryElementOfKind:elementKind atIndexPath:elementIndexPath];
+- (BOOL)shouldInvalidateLayoutForBoundsChange:(NSRect)newBounds {
+    return YES;
 }
 
 - (void)finalizeLayoutTransition {

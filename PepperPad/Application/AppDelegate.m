@@ -7,6 +7,7 @@
 
 #import "AppDelegate.h"
 #import "MainWindow.h"
+#import "NSToolTipManager.h"
 
 @interface AppDelegate ()
 @end
@@ -14,6 +15,7 @@
 @implementation AppDelegate
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
+    [[NSToolTipManager sharedToolTipManager] setInitialToolTipDelay:0.1];
     MainWindow *mainWindow = [MainWindow new];
     [mainWindow makeKeyAndOrderFront:self];
     [mainWindow release];
